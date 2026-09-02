@@ -163,7 +163,7 @@
       <!-- 投票填表主區域 -->
       <form id="votingForm" onsubmit="handleVoteSubmit(event)" class="space-y-8">
         
-        <!-- 身分驗證 (僅留 Email 與格式識別) -->
+        <!-- 身分驗證 -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
@@ -192,7 +192,7 @@
           </div>
         </div>
 
-        <!-- 口頭發表投票 (B 系列, 5 列網格) -->
+        <!-- 口頭發表投票 (B 系列) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
@@ -205,13 +205,12 @@
             <span id="selected-oral-badge" class="text-xs font-bold px-2.5 py-1 rounded bg-wabi-indigoLight text-wabi-indigo">單選</span>
           </div>
 
-          <!-- 5 列適應式網格容器 -->
           <div id="oralList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
-            <!-- JS 動態生成 5 列按鈕 -->
+            <!-- JS 動態生成按鈕 -->
           </div>
         </div>
 
-        <!-- 海報發表投票 (C 系列, 5 列網格) -->
+        <!-- 海報發表投票 (C 系列) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
@@ -224,9 +223,8 @@
             <span id="selected-poster-badge" class="text-xs font-bold px-2.5 py-1 rounded bg-wabi-pine/10 text-wabi-pine">單選</span>
           </div>
 
-          <!-- 5 列適應式網格容器 -->
           <div id="posterList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
-            <!-- JS 動態生成 5 列按鈕 -->
+            <!-- JS 動態生成按鈕 -->
           </div>
         </div>
 
@@ -263,12 +261,11 @@
     </section>
 
     <!-- =============================== -->
-    <!-- TAB 2: 即時票況排行榜 (Live Rank & Settlement Mode) -->
+    <!-- TAB 2: 即時票況排行榜 -->
     <!-- =============================== -->
     <section id="tab-results-content" class="hidden space-y-8">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
         
-        <!-- 動態開票/結算 Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-wabi-border pb-6">
           <div>
             <div id="resultsHeaderBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-wabi-vermilion/10 text-wabi-vermilion text-xs font-semibold mb-2">
@@ -282,7 +279,6 @@
             </p>
           </div>
 
-          <!-- 統計總覽與切換排序模式 -->
           <div class="flex items-center gap-2">
             <div class="bg-wabi-base p-2.5 rounded-xl text-center min-w-[85px] border border-wabi-border">
               <span class="block text-[10px] text-wabi-muted font-medium">總投票人次</span>
@@ -300,10 +296,8 @@
           </div>
         </div>
 
-        <!-- 投票截止結算榮譽框 (僅於投票截止時動態生成) -->
         <div id="winnerSpotlightContainer" class="hidden mt-6"></div>
 
-        <!-- 切換口頭/海報榜單標籤 -->
         <div class="flex gap-2 my-6 p-1 bg-wabi-base rounded-xl border border-wabi-border max-w-md">
           <button id="rankTab-oral" onclick="switchRankView('oral')" class="flex-1 py-2 rounded-lg text-xs sm:text-sm font-bold transition bg-white text-wabi-indigo shadow-sm flex items-center justify-center gap-1.5">
             <i data-lucide="mic" class="w-4 h-4"></i>
@@ -315,10 +309,7 @@
           </button>
         </div>
 
-        <!-- 排行清單容器 -->
-        <div id="rankListContainer" class="space-y-4">
-          <!-- JS 動態生成排行榜項目 -->
-        </div>
+        <div id="rankListContainer" class="space-y-4"></div>
 
       </div>
     </section>
@@ -329,7 +320,6 @@
     <section id="tab-admin-content" class="hidden space-y-8">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
         
-        <!-- 後台標題列 -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-wabi-border">
           <div>
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-wabi-indigo/10 text-wabi-indigo text-xs font-bold mb-2">
@@ -345,7 +335,7 @@
           </button>
         </div>
 
-        <!-- 1. 投票開放起訖時間排程 -->
+        <!-- 1. 排程設定 -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border space-y-3">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
             <i data-lucide="calendar" class="w-4 h-4 text-wabi-pine"></i>
@@ -368,7 +358,7 @@
           </div>
         </div>
 
-        <!-- 2. Excel 檔案上傳解析 -->
+        <!-- 2. Excel 上傳 -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border space-y-3">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
             <i data-lucide="file-spread-sheet" class="w-4 h-4 text-wabi-pine"></i>
@@ -390,7 +380,7 @@
           </div>
         </div>
 
-        <!-- 3. 手動新增發表項目 (強制前綴驗證) -->
+        <!-- 3. 新增項目 -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo mb-3 flex items-center gap-2">
             <i data-lucide="plus-circle" class="w-4 h-4 text-wabi-pine"></i>
@@ -417,7 +407,7 @@
           </form>
         </div>
 
-        <!-- 4. 發表項目管理清單 (雙類別單獨管理) -->
+        <!-- 4. 發表項目管理 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6">
           <div class="border border-wabi-border rounded-xl p-4 bg-white">
             <div class="flex items-center justify-between mb-3">
@@ -440,7 +430,7 @@
           </div>
         </div>
 
-        <!-- 5. 投票歷史紀錄與鎖定名冊 (含即時更新按鈕) -->
+        <!-- 5. 歷史紀錄與更新按鈕 -->
         <div class="pt-6 border-t border-wabi-border">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
@@ -491,9 +481,7 @@
 
   </main>
 
-  <!-- =============================== -->
-  <!-- 彈出視窗 1: 管理員登入 Modal (僅帳號與密碼) -->
-  <!-- =============================== -->
+  <!-- 彈出視窗 1: 管理員登入 Modal -->
   <div id="adminLoginModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-wabi-border transform transition-all">
       <div class="flex items-center justify-between mb-4 pb-2 border-b border-wabi-border">
@@ -581,12 +569,12 @@
     // 內嵌 Google Apps Script API 網址
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyssEU748SIPWKPg6lOf0meS_1RqLLq94amDCRoRu-QuJ_m937sDPllJfPc9L_jjaGt/exec";
 
-    // 預設全域狀態 (無本機 localStorage 依賴，資料完全與雲端同步)
+    // 全域狀態
     const APP_STATE = {
       userIP: '偵測中...',
       isAdminLoggedIn: false,
-      currentRankView: 'oral', // 'oral' | 'poster'
-      sortMode: 'rank',       // 'rank' | 'id'
+      currentRankView: 'oral',
+      sortMode: 'rank',
       
       voteStartTime: '',
       voteEndTime: '',
@@ -669,7 +657,6 @@
         if (data && data.status === 'success') {
           if (data.records) APP_STATE.votedRecords = data.records;
           
-          // 計算得票數
           const oralCounts = {};
           const posterCounts = {};
 
@@ -685,7 +672,6 @@
             item.votes = posterCounts[item.code] || 0;
           });
 
-          // 判斷目前裝置 IP 是否曾於雲端完成投票
           const myRecord = APP_STATE.votedRecords.find(r => r.ip === APP_STATE.userIP);
           if (myRecord) {
             APP_STATE.hasVoted = true;
@@ -697,7 +683,6 @@
       }
     }
 
-    // 檢查投票起訖時間與狀態
     function checkVotingTimeSchedule() {
       const now = new Date();
       const submitBtn = document.getElementById('submitVoteBtn');
@@ -788,7 +773,6 @@
       lucide.createIcons();
     }
 
-    // Email 格式驗證
     function validateEmailFormat() {
       const emailInput = document.getElementById('voterEmail');
       const feedback = document.getElementById('email-feedback');
@@ -811,7 +795,6 @@
       }
     }
 
-    // 渲染 5 列適應式選取網格
     function renderVotingCards() {
       const oralContainer = document.getElementById('oralList');
       oralContainer.innerHTML = APP_STATE.oralItems.map(item => {
@@ -846,7 +829,7 @@
       renderVotingCards();
     }
 
-    // 送出投票驗證與雲端發送
+    // 送出投票並寫入 GAS (修復 CORS 問題)
     async function handleVoteSubmit(e) {
       e.preventDefault();
 
@@ -862,7 +845,6 @@
 
       const email = document.getElementById('voterEmail').value.trim().toLowerCase();
 
-      // Email 唯一性檢核
       if (APP_STATE.votedRecords.some(r => r.email === email && r.ip !== APP_STATE.userIP)) {
         showModal('無法重複投票', `此 Email (${email}) 已有投票記錄！`, 'error');
         return;
@@ -879,19 +861,16 @@
         ip: APP_STATE.userIP
       };
 
-      // 雲端同步寫入
       try {
         await fetch(DEFAULT_GAS_URL, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'addVote', vote: newRecord })
         });
       } catch (err) {
-        console.warn("雲端同步背景處理中。");
+        console.warn("雲端發送遭遇阻擋，請確認 GAS 權限設定。", err);
       }
 
-      // 本機狀態更新
       APP_STATE.hasVoted = true;
       APP_STATE.myVotedRecord = newRecord;
       APP_STATE.votedRecords.unshift(newRecord);
@@ -905,7 +884,7 @@
       });
     }
 
-    // 修改投票 (自動從雲端扣除舊紀錄防灌票)
+    // 修改投票 (自 GAS 刪除舊紀錄)
     async function handleModifyVote() {
       if (!APP_STATE.myVotedRecord) return;
 
@@ -915,19 +894,16 @@
         async () => {
           const oldRecord = APP_STATE.myVotedRecord;
 
-          // 發送刪除舊紀錄指令
           try {
             await fetch(DEFAULT_GAS_URL, {
               method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
               body: JSON.stringify({ action: 'deleteVote', email: oldRecord.email, ip: oldRecord.ip })
             });
           } catch (err) {
-            console.warn("雲端扣票連動中。");
+            console.warn("雲端發送扣票指令。", err);
           }
 
-          // 扣票與狀態重設
           APP_STATE.hasVoted = false;
           APP_STATE.myVotedRecord = null;
           APP_STATE.votedRecords = APP_STATE.votedRecords.filter(r => r.ip !== APP_STATE.userIP);
@@ -943,7 +919,6 @@
       );
     }
 
-    // 即時開票與投票截止「最終結算」模式
     function toggleSortMode(mode) {
       APP_STATE.sortMode = mode;
       const btnRank = document.getElementById('btn-sort-rank');
@@ -980,7 +955,6 @@
       const now = new Date();
       const isVotingEnded = APP_STATE.voteEndTime && new Date(APP_STATE.voteEndTime) <= now;
 
-      // 更新 Header 說明
       const badgeEl = document.getElementById('resultsHeaderBadge');
       const titleEl = document.getElementById('resultsHeaderTitle');
       const descEl = document.getElementById('resultsHeaderDesc');
@@ -999,7 +973,6 @@
         }
       }
 
-      // 渲染結算榮譽框 (僅於投票截止時顯示)
       const winnerSpotlightContainer = document.getElementById('winnerSpotlightContainer');
       if (winnerSpotlightContainer) {
         if (isVotingEnded) {
@@ -1067,7 +1040,6 @@
 
       const totalVotesInCategory = sortedList.reduce((acc, cur) => acc + cur.votes, 0);
 
-      // Dense Rank 計算同票同名次獎牌
       const uniqueValidVotes = Array.from(new Set(sortedList.map(item => item.votes).filter(v => v > 0))).sort((a, b) => b - a);
       const rank1Votes = uniqueValidVotes[0] || -1;
       const rank2Votes = uniqueValidVotes[1] || -1;
@@ -1134,7 +1106,6 @@
       lucide.createIcons();
     }
 
-    // 管理員登入 Modal 開啟
     function openAdminModal() {
       if (APP_STATE.isAdminLoggedIn) {
         switchTab('admin');
@@ -1152,7 +1123,7 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-    // 簡化且穩定之管理員登入驗證（直接比對預設帳密 twlean / lean25553000!）
+    // 穩定的明文登入驗證
     function handleAdminLogin(e) {
       e.preventDefault();
       const user = document.getElementById('adminUser').value.trim();
@@ -1175,7 +1146,6 @@
       showModal('已登出', '您已順利登出大會管理後台。', 'success');
     }
 
-    // 儲存時間排程
     function saveScheduleSettings() {
       APP_STATE.voteStartTime = document.getElementById('admin-start-time').value;
       APP_STATE.voteEndTime = document.getElementById('admin-end-time').value;
@@ -1184,7 +1154,6 @@
       showModal('排程已更新', '投票起訖開放時間已順利更新完成！', 'success');
     }
 
-    // Excel 批次上傳解析
     function importExcelSubmissions() {
       const fileInput = document.getElementById('excelFileInput');
       if (fileInput.files.length === 0) {
@@ -1229,7 +1198,6 @@
       reader.readAsArrayBuffer(file);
     }
 
-    // 手動新增發表組別 (前綴強效綁定)
     function handleAddNewItem(e) {
       e.preventDefault();
       const cat = document.getElementById('newCategory').value;
@@ -1272,7 +1240,6 @@
       showModal('新增成功', `已成功新增發表編號【${code}】！`, 'success');
     }
 
-    // 刪除發表項目
     function deleteItem(cat, code) {
       showConfirmModal(
         `確認刪除【${code}】？`,
@@ -1289,7 +1256,6 @@
       );
     }
 
-    // 得票數單項歸零
     function resetSingleItemVote(cat, code) {
       const target = (cat === 'oral' ? APP_STATE.oralItems : APP_STATE.posterItems).find(i => i.code === code);
       if (target) {
@@ -1300,7 +1266,7 @@
       }
     }
 
-    // 後台名冊與歷史紀錄重新整理 (免重新載入網頁，防登出)
+    // 後台名冊重新整理 (非同步更新，不會被登出)
     async function refreshAdminLogs() {
       const icon = document.getElementById('refresh-log-icon');
       if (icon) icon.classList.add('animate-spin');
@@ -1371,7 +1337,7 @@
       lucide.createIcons();
     }
 
-    // 個別解鎖並雲端扣票
+    // 個別解鎖並通知 GAS 扣票 (修復 CORS)
     function unlockSingleVoter(index) {
       const record = APP_STATE.votedRecords[index];
       if (!record) return;
@@ -1383,12 +1349,11 @@
           try {
             await fetch(DEFAULT_GAS_URL, {
               method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
               body: JSON.stringify({ action: 'deleteVote', email: record.email, ip: record.ip })
             });
           } catch (err) {
-            console.warn("雲端發送扣票指令。");
+            console.warn("雲端發送扣票指令。", err);
           }
 
           APP_STATE.votedRecords.splice(index, 1);
@@ -1403,7 +1368,6 @@
       );
     }
 
-    // 彈出視窗對話框控制
     function showConfirmModal(title, desc, onConfirm, mode = 'danger') {
       pendingConfirmAction = onConfirm;
       document.getElementById('confirmTitle').textContent = title;
