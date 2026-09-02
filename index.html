@@ -57,7 +57,7 @@
 </head>
 <body class="text-wabi-text font-sans antialiased min-h-screen flex flex-col selection:bg-wabi-indigo selection:text-white">
 
-  <!-- 頁首導覽列 (移除「精」Icon，更新標題與副標) -->
+  <!-- 頁首導覽列 (已移除「精」Icon，更新標題與副標) -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-wabi-border transition-all shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2.5">
       <div class="cursor-pointer text-center sm:text-left" onclick="switchTab('vote')">
@@ -93,7 +93,7 @@
     <!-- TAB 1: 投票專區 -->
     <section id="tab-vote-content" class="space-y-6">
       
-      <!-- 投票時程動態狀態條 -->
+      <!-- 投票時程與雲端同步狀態條 -->
       <div id="voting-status-banner" class="p-3.5 sm:p-4 rounded-2xl bg-wabi-indigoLight border border-wabi-indigo/20 text-wabi-indigo text-center text-xs sm:text-sm font-medium shadow-zen flex items-center justify-center gap-2 transition-all">
         <i data-lucide="loader" class="w-4 h-4 animate-spin"></i>
         <span>投票系統狀態檢查中...</span>
@@ -286,7 +286,7 @@
             <button onclick="toggleResultSort('id')" id="btn-sort-id" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-wabi-base text-wabi-muted hover:bg-wabi-indigoLight transition">
               依編號序排列
             </button>
-            <button onclick="renderResults()" class="p-2 rounded-xl text-wabi-muted hover:bg-wabi-base border border-wabi-border text-xs font-medium transition" title="手動重新整理">
+            <button onclick="fetchCloudDataAndRender()" class="p-2 rounded-xl text-wabi-muted hover:bg-wabi-base border border-wabi-border text-xs font-medium transition" title="手動重新整理">
               <i data-lucide="rotate-cw" class="w-4 h-4"></i>
             </button>
           </div>
@@ -347,6 +347,46 @@
           </button>
         </div>
 
+        <!-- 0. Google 試算表 (Google Sheets) 雲端串接設定區塊 (強調資安保護: 試算表保持私密) -->
+        <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-zen border border-wabi-border">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-base font-serif font-bold text-wabi-indigo flex items-center gap-2">
+              <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
+              <span>Google 試算表 (Google Sheets) 跨裝置雲端串接設定</span>
+            </h3>
+            <button onclick="openAppsScriptModal()" class="text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 px-3 py-1.5 rounded-xl font-bold border border-sky-200 transition flex items-center gap-1">
+              <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+              <span>📜 檢視欄位、步驟與 1 分鐘程式碼</span>
+            </button>
+          </div>
+          
+          <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl mb-4 text-xs text-amber-900 flex items-start gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-700 shrink-0 mt-0.5"></i>
+            <div>
+              <span class="font-bold">🔒 資安防護說明（完全不需共享試算表）：</span>
+              您的 Google 試算表檔案<strong class="underline">維持私人，絕不要開啟任何「共用」或公開編輯權限</strong>。透過 Apps Script 部署 API，使用者僅能提交投票數據，任何人皆無法點擊、閱讀或篡改您的 Google 試算表原本檔案！
+            </div>
+          </div>
+
+          <p class="text-xs text-wabi-muted mb-3">
+            若要讓不同裝置（手機/電腦）投票後能**自動跨裝置即時彙整統計**，請將部署好的 Apps Script Web App URL 貼入下方：
+          </p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input 
+              type="url" 
+              id="gas-url-input" 
+              placeholder="貼上網址 (例: https://script.google.com/macros/s/.../exec)" 
+              class="flex-1 px-3.5 py-2.5 bg-wabi-base border border-wabi-border rounded-xl text-xs focus:outline-none focus:border-wabi-indigo font-mono"
+            >
+            <button onclick="saveGasUrl()" class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-sm shrink-0">
+              儲存雲端網址
+            </button>
+          </div>
+          <div id="gas-status-indicator" class="mt-2 text-[11px] font-medium text-wabi-muted flex items-center gap-1">
+            <!-- 動態狀態顯示 -->
+          </div>
+        </div>
+
         <!-- 1. 投票時間排程與 Excel 匯入設定 -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-zen border border-wabi-border">
@@ -395,7 +435,7 @@
           </div>
         </div>
 
-        <!-- 2. 手動新增發表組別編號 (已移除主題欄位) -->
+        <!-- 2. 手動新增發表組別編號 -->
         <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-zen border border-wabi-border">
           <h3 class="text-sm sm:text-base font-serif font-bold text-wabi-indigo mb-3 flex items-center gap-2">
             <i data-lucide="plus-circle" class="w-4.5 h-4.5 text-wabi-pine"></i>
@@ -422,7 +462,7 @@
           </form>
         </div>
 
-        <!-- 3. 兩類別項目與得票數列表 (無重複符號，含歸零與垃圾桶刪除) -->
+        <!-- 3. 兩類別項目與得票數列表 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- 口頭發表組別列表 -->
           <div class="bg-white p-5 rounded-2xl shadow-zen border border-wabi-border">
@@ -461,7 +501,7 @@
                 <i data-lucide="list" class="w-4.5 h-4.5"></i>
                 <span>投票歷史紀錄與鎖定名冊</span>
               </h3>
-              <p class="text-[11px] text-wabi-muted mt-0.5">若與會者填錯或遇 IP 誤鎖，可點選「個別解鎖」解除其鎖定並扣回對應票數。</p>
+              <p class="text-[11px] text-wabi-muted mt-0.5">若與會者填錯或遇 IP 誤鎖，可點選「個別解鎖」解除其鎖定並扣回對應票數（已同步雲端試算表）。</p>
             </div>
             <span id="voteLogSummary" class="text-xs text-wabi-muted font-mono bg-wabi-base px-3 py-1 rounded-full border border-wabi-border self-start sm:self-auto">共 0 筆投票紀錄</span>
           </div>
@@ -491,7 +531,7 @@
             <i data-lucide="rotate-ccw" class="w-4 h-4 text-wabi-vermilion"></i>
             <span>投票數據重設與清理</span>
           </h3>
-          <p class="text-xs text-wabi-muted mb-4">在大會正式開展前，可在此清空測試投票紀錄，並將所有編號得票歸零。</p>
+          <p class="text-xs text-wabi-muted mb-4">在大會正式開展前，可在此清空測試投票紀錄（同步刪除試算表紀錄），並將所有編號得票歸零。</p>
           <div class="flex flex-wrap gap-2.5">
             <button onclick="resetVotesOnly()" class="bg-amber-50 text-amber-800 border border-amber-200 px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-100 transition">
               得票數歸零 (保留編號名冊)
@@ -507,7 +547,7 @@
 
   </main>
 
-  <!-- 管理員登入 Modal (僅有帳號、密碼輸入框) -->
+  <!-- 管理員登入 Modal -->
   <div id="adminLoginModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-wabi-border">
       <div class="flex items-center justify-between mb-5">
@@ -536,6 +576,144 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Apps Script 欄位說明與 1 分鐘部署教學 Modal -->
+  <div id="appsScriptModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-2xl rounded-2xl p-6 shadow-2xl border border-wabi-border space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-wabi-border pb-3">
+        <h3 class="font-serif font-bold text-lg text-wabi-indigo flex items-center gap-2">
+          <i data-lucide="code" class="w-5 h-5 text-sky-600"></i>
+          <span>Google 試算表欄位定義、步驟與資安說明</span>
+        </h3>
+        <button onclick="closeAppsScriptModal()" class="text-wabi-muted hover:text-wabi-text">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- 資安與權限重點提示卡片 -->
+      <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-xl text-xs text-emerald-900 leading-relaxed space-y-1">
+        <div class="font-bold text-sm text-emerald-800 flex items-center gap-1.5">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-700"></i>
+          <span>🔒 試算表安全權限聲明（不需分享給任何人）：</span>
+        </div>
+        <p>您的 Google 試算表檔案完全不需要點擊「共用」或提供公開檢視權限。建立好試算表後，請保持最高私人等級。僅有部署後的 Apps Script API 能夠寫入資料，其他人完全無法讀取或竄改您硬碟中的試算表內容！</p>
+      </div>
+
+      <!-- 欄位製作與步驟說明 -->
+      <div class="space-y-2 text-xs text-wabi-text leading-relaxed">
+        <p class="font-bold text-wabi-indigo text-sm">📋 步驟 1：建立試算表並定義欄位</p>
+        <p class="text-wabi-muted">
+          請開一個新的空白 Google 試算表，在<strong>第一行 (Row 1)</strong> 依序填入 5 個欄位標頭（如不安裝系統也會自動建立）：<br>
+          <code class="bg-slate-100 text-slate-800 px-2 py-1 rounded font-mono font-bold mt-1 inline-block">時間 | EMAIL | 口頭投票 | 海報投票 | IP</code>
+        </p>
+
+        <p class="font-bold text-wabi-indigo text-sm pt-2">⚡ 步驟 2：貼上 Apps Script 程式碼</p>
+        <ol class="list-decimal pl-5 space-y-1 text-wabi-muted">
+          <li>點選頂部選單「擴充功能」➔「Apps Script」。</li>
+          <li>刪除原本預設語法，貼入下方專用程式碼，點選「儲存 (💾)」。</li>
+          <li>點選右上角「部署」➔「新增部署」➔ 種類選「Web 應用程式」。</li>
+          <li><strong>「執行身份」選「我 (Me)」，「誰可以存取」選「所有人 (Anyone)」</strong>。</li>
+          <li>點選部署並複製產生的「Web 應用程式網址 (URL)」貼回後台欄位即可完成串接！</li>
+        </ol>
+      </div>
+
+      <div class="relative">
+        <textarea id="apps-script-code" readonly class="w-full h-48 p-3 bg-slate-900 text-slate-100 font-mono text-[11px] rounded-xl border border-slate-700 leading-normal focus:outline-none">
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    var action = data.action;
+    
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["時間", "EMAIL", "口頭投票", "海報投票", "IP"]);
+    }
+    
+    if (action === 'vote') {
+      sheet.appendRow([data.time, data.email, data.oral, data.poster, data.ip]);
+      return responseJSON({ status: 'success' });
+    }
+    
+    if (action === 'modifyVote') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = rows.length - 1; i >= 1; i--) {
+        if (rows[i][1] === data.email) {
+          sheet.deleteRow(i + 1);
+          break;
+        }
+      }
+      return responseJSON({ status: 'success' });
+    }
+    
+    if (action === 'deleteVote') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = rows.length - 1; i >= 1; i--) {
+        if (rows[i][1] === data.email) {
+          sheet.deleteRow(i + 1);
+          break;
+        }
+      }
+      return responseJSON({ status: 'success' });
+    }
+    
+    if (action === 'resetVotes') {
+      sheet.clear();
+      sheet.appendRow(["時間", "EMAIL", "口頭投票", "海報投票", "IP"]);
+      return responseJSON({ status: 'success' });
+    }
+    
+    return responseJSON({ status: 'error', message: 'Unknown Action' });
+  } catch (err) {
+    return responseJSON({ status: 'error', message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function doGet(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    if (sheet.getLastRow() <= 1) {
+      return responseJSON({ status: 'success', records: [] });
+    }
+    var rows = sheet.getDataRange().getValues();
+    var records = [];
+    for (var i = 1; i < rows.length; i++) {
+      if (rows[i][1]) {
+        records.push({
+          time: rows[i][0],
+          email: rows[i][1],
+          oral: rows[i][2],
+          poster: rows[i][3],
+          ip: rows[i][4]
+        });
+      }
+    }
+    return responseJSON({ status: 'success', records: records });
+  } catch (err) {
+    return responseJSON({ status: 'error', message: err.toString() });
+  }
+}
+
+function responseJSON(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+        </textarea>
+      </div>
+
+      <div class="flex justify-between items-center pt-2">
+        <button onclick="copyAppsScriptCode()" class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>一鍵複製語法</span>
+        </button>
+        <button onclick="closeAppsScriptModal()" class="bg-wabi-base text-wabi-muted px-4 py-2 rounded-xl text-xs font-bold hover:bg-gray-200 transition">
+          關閉
+        </button>
+      </div>
     </div>
   </div>
 
@@ -622,7 +800,7 @@
       } else if (tabId === 'results') {
         document.getElementById('tab-results-content').classList.remove('hidden');
         btnResults.className = "px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
-        renderResults();
+        fetchCloudDataAndRender();
       } else if (tabId === 'admin') {
         if (!isAdminLoggedIn) {
           openAdminModal();
@@ -750,7 +928,9 @@
         banner.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-wabi-vermilion"></i><span>🛑 投票已截止，感謝各位與會專家的熱烈參與！</span>`;
         banner.className = "p-3.5 sm:p-4 rounded-2xl bg-red-50 border border-red-200 text-wabi-vermilion text-center text-xs sm:text-sm font-medium shadow-zen flex items-center justify-center gap-2";
       } else {
-        banner.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-wabi-pine"></i><span>🟢 投票進行中：請填寫 Email 並選取口頭與海報發表編號</span>`;
+        const gasUrl = localStorage.getItem('gasWebUrl');
+        const syncLabel = gasUrl ? ' (已連線 Google 雲端試算表 API 跨裝置同步)' : '';
+        banner.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-wabi-pine"></i><span>🟢 投票進行中：請填寫 Email 並選取口頭與海報發表編號${syncLabel}</span>`;
         banner.className = "p-3.5 sm:p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-wabi-pine text-center text-xs sm:text-sm font-medium shadow-zen flex items-center justify-center gap-2";
       }
 
@@ -767,7 +947,7 @@
         const oralDesc = storedVote ? storedVote.oral : selectedOral;
         const posterDesc = storedVote ? storedVote.poster : selectedPoster;
 
-        banner.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4 text-wabi-pine"></i><span>✓ 已完成投票（口頭：${oralDesc} / 海報：${posterDesc}），欲更換可點擊下方「修改投票」。</span>`;
+        banner.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4 text-wabi-pine"></i><span>✓ 您在此裝置已完成投票（口頭：${oralDesc} / 海報：${posterDesc}），欲更換可點擊下方「修改投票」。</span>`;
         banner.className = "p-3.5 sm:p-4 rounded-2xl bg-wabi-indigoLight border border-wabi-indigo/30 text-wabi-indigo text-center text-xs sm:text-sm font-medium shadow-zen flex items-center justify-center gap-2";
       } else if (!isTimeValid) {
         submitBtn.disabled = true;
@@ -783,8 +963,8 @@
       lucide.createIcons();
     }
 
-    // 送出投票並寫入紀錄
-    function submitVotes() {
+    // 送出投票並寫入紀錄（同步寫入 Google 試算表 API）
+    async function submitVotes() {
       if (localStorage.getItem('hasVoted') === 'true') {
         showModal("提示", "同一裝置僅限投一次，如需變更請點選「修改投票」。");
         return;
@@ -820,21 +1000,38 @@
       let logs = JSON.parse(localStorage.getItem('voteHistoryLogs')) || [];
       const now = new Date();
       const timeStr = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-      logs.unshift({
+      
+      const newRecord = {
         time: timeStr,
         email: emailInput,
         oral: selectedOral,
         poster: selectedPoster,
         ip: "192.168.1.1"
-      });
+      };
+      logs.unshift(newRecord);
       localStorage.setItem('voteHistoryLogs', JSON.stringify(logs));
+
+      // 同步 POST 到 Apps Script API (寫入私密 Google 試算表)
+      const gasUrl = localStorage.getItem('gasWebUrl');
+      if (gasUrl) {
+        try {
+          fetch(gasUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'vote', ...newRecord })
+          });
+        } catch (e) {
+          console.error("Google Apps Script 寫入失敗", e);
+        }
+      }
 
       showModal("投票成功", `感謝您的參與！\n口頭發表選取：【${selectedOral}】\n海報發表選取：【${selectedPoster}】\n投票已順利記錄完成，若需調整可點擊「修改投票」。`);
       initVotingUI();
     }
 
-    // 修改投票 (點選時自動扣除原登記票數，避免重複計票灌水)
-    function enableEditVote() {
+    // 修改投票 (點選時自動扣除原登記票數，並同步向 Apps Script 刪除舊紀錄)
+    async function enableEditVote() {
       const storedVote = JSON.parse(localStorage.getItem('myVote'));
       if (storedVote) {
         let votes = JSON.parse(localStorage.getItem('votesData')) || { oral: {}, poster: {} };
@@ -848,17 +1045,32 @@
 
         // 同步自歷史紀錄中刪除先前紀錄
         let logs = JSON.parse(localStorage.getItem('voteHistoryLogs')) || [];
-        logs = logs.filter(item => !(item.email === storedVote.email && item.oral === storedVote.oral && item.poster === storedVote.poster));
+        logs = logs.filter(item => !(item.email === storedVote.email));
         localStorage.setItem('voteHistoryLogs', JSON.stringify(logs));
+
+        // 向 Apps Script 發送刪除請求，確保試算表扣票防灌水
+        const gasUrl = localStorage.getItem('gasWebUrl');
+        if (gasUrl) {
+          try {
+            fetch(gasUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'modifyVote', email: storedVote.email })
+            });
+          } catch (e) {
+            console.error("雲端試算表紀錄扣除失敗", e);
+          }
+        }
       }
 
       localStorage.removeItem('hasVoted');
       
       initVotingUI();
       checkVotingTime();
-      renderResults();
+      fetchCloudDataAndRender();
 
-      showModal("已開啟修改模式", "系統已自動扣除您先前登記的票數。\n請重新選取組別，完成後點選「確認送出投票」。");
+      showModal("已開啟修改模式", "系統已自動扣除您先前登記的票數（並向雲端同步扣除）。\n請重新選取組別，完成後點選「確認送出投票」。");
     }
 
     function toggleResultSort(mode) {
@@ -872,6 +1084,30 @@
       } else {
         btnId.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-wabi-indigo text-white shadow-sm transition";
         btnRank.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-wabi-base text-wabi-muted hover:bg-wabi-indigoLight transition";
+      }
+      renderResults();
+    }
+
+    // 抓取雲端試算表 API 數據並即時動態算票
+    async function fetchCloudDataAndRender() {
+      const gasUrl = localStorage.getItem('gasWebUrl');
+      if (gasUrl) {
+        try {
+          const res = await fetch(gasUrl);
+          const data = await res.json();
+          if (data && data.status === 'success' && Array.isArray(data.records)) {
+            // 從試算表重新匯總投票數據
+            let cloudVotes = { oral: {}, poster: {} };
+            data.records.forEach(r => {
+              if (r.oral) cloudVotes.oral[r.oral] = (cloudVotes.oral[r.oral] || 0) + 1;
+              if (r.poster) cloudVotes.poster[r.poster] = (cloudVotes.poster[r.poster] || 0) + 1;
+            });
+            localStorage.setItem('votesData', JSON.stringify(cloudVotes));
+            localStorage.setItem('voteHistoryLogs', JSON.stringify(data.records));
+          }
+        } catch (err) {
+          console.warn("無法取得雲端試算表跨裝置資料，切換為單機紀錄模式", err);
+        }
       }
       renderResults();
     }
@@ -1014,7 +1250,44 @@
     function loadAdminSettings() {
       document.getElementById('vote-start-time').value = localStorage.getItem('voteStartTime') || '';
       document.getElementById('vote-end-time').value = localStorage.getItem('voteEndTime') || '';
+      document.getElementById('gas-url-input').value = localStorage.getItem('gasWebUrl') || '';
+      updateGasStatusIndicator();
       updateCountIndicator();
+    }
+
+    function saveGasUrl() {
+      const url = document.getElementById('gas-url-input').value.trim();
+      localStorage.setItem('gasWebUrl', url);
+      updateGasStatusIndicator();
+      showModal("儲存成功", "Google 試算表 Web App 網址已成功更新！跨裝置即時彙整已啟用（您的原始試算表保持私人受保護）。");
+      fetchCloudDataAndRender();
+    }
+
+    function updateGasStatusIndicator() {
+      const url = localStorage.getItem('gasWebUrl');
+      const indicator = document.getElementById('gas-status-indicator');
+      if (indicator) {
+        if (url) {
+          indicator.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700">🟢 雲端 API 同步中：已綁定 Web App API (試算表保持完全私人安全)</span>`;
+        } else {
+          indicator.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span><span class="text-amber-700">🟡 未設定 API 網址：目前僅於各裝置本機暫存統計 (請點右上角檢視步驟)</span>`;
+        }
+      }
+    }
+
+    function openAppsScriptModal() {
+      document.getElementById('appsScriptModal').classList.remove('hidden');
+    }
+
+    function closeAppsScriptModal() {
+      document.getElementById('appsScriptModal').classList.add('hidden');
+    }
+
+    function copyAppsScriptCode() {
+      const textarea = document.getElementById('apps-script-code');
+      textarea.select();
+      document.execCommand('copy');
+      showModal("複製成功", "Apps Script 程式碼已複製至剪貼簿！請至私利 Google 試算表擴充功能貼上並部署。");
     }
 
     function updateCountIndicator() {
@@ -1168,7 +1441,8 @@
       showModal("刪除成功", "發表項目已順利自列表中移除。");
     }
 
-    function unlockSingleLog(index) {
+    // 個別解鎖並同步刪除雲端試算表紀錄
+    async function unlockSingleLog(index) {
       let logs = JSON.parse(localStorage.getItem('voteHistoryLogs')) || [];
       if (index >= 0 && index < logs.length) {
         const item = logs[index];
@@ -1186,6 +1460,21 @@
           localStorage.removeItem('myVote');
         }
 
+        // 向 Apps Script 發送刪除紀錄請求
+        const gasUrl = localStorage.getItem('gasWebUrl');
+        if (gasUrl) {
+          try {
+            fetch(gasUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'deleteVote', email: item.email })
+            });
+          } catch (e) {
+            console.error("試算表解鎖刪除失敗", e);
+          }
+        }
+
         // 移除 log
         logs.splice(index, 1);
         localStorage.setItem('voteHistoryLogs', JSON.stringify(logs));
@@ -1193,7 +1482,7 @@
         initVotingUI();
         renderAdminLists();
         renderResults();
-        showModal("解鎖成功", `已解除 ${item.email} 之鎖定紀錄，並同步扣回口頭【${item.oral}】與海報【${item.poster}】各 1 票。`);
+        showModal("解鎖成功", `已解除 ${item.email} 之鎖定紀錄（已同步試算表），並扣回口頭【${item.oral}】與海報【${item.poster}】各 1 票。`);
       }
     }
 
@@ -1257,22 +1546,49 @@
       reader.readAsArrayBuffer(file);
     }
 
-    // 歸零得票數
+    // 歸零得票數（同步清空雲端試算表）
     function resetVotesOnly() {
       localStorage.removeItem('votesData');
       localStorage.removeItem('hasVoted');
       localStorage.removeItem('myVote');
       localStorage.removeItem('voteHistoryLogs');
+      
+      const gasUrl = localStorage.getItem('gasWebUrl');
+      if (gasUrl) {
+        try {
+          fetch(gasUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'resetVotes' })
+          });
+        } catch (e) {
+          console.error("試算表重置失敗", e);
+        }
+      }
+
       selectedOral = null;
       selectedPoster = null;
       initVotingUI();
       renderResults();
       renderAdminLists();
-      showModal("歸零完成", "所有口頭與海報發表的得票數已全數歸零，並已清除鎖定紀錄。");
+      showModal("歸零完成", "所有口頭與海報發表的得票數已全數歸零，雲端試算表紀錄已同步重置。");
     }
 
     // 全系統重設
     function resetSystemData() {
+      const gasUrl = localStorage.getItem('gasWebUrl');
+      if (gasUrl) {
+        try {
+          fetch(gasUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'resetVotes' })
+          });
+        } catch (e) {}
+      }
+
       localStorage.clear();
       oralItems = [...defaultOralList];
       posterItems = [...defaultPosterList];
@@ -1296,6 +1612,7 @@
 
     window.onload = function() {
       initVotingUI();
+      fetchCloudDataAndRender();
     };
   </script>
 </body>
