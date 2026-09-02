@@ -566,8 +566,8 @@
     // 停用滑鼠右鍵點擊
     document.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 內嵌 Google Apps Script API 網址
-    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyssEU748SIPWKPg6lOf0meS_1RqLLq94amDCRoRu-QuJ_m937sDPllJfPc9L_jjaGt/exec";
+    // 更新為全新的 Google Apps Script 部署網址
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyz_UI1R2cs3c36ahin6JbBfvxtmmb3nI_q7jyD4jGZhs0ASB_XUM9b3wioa3Jh5_nC/exec";
 
     // 全域狀態
     const APP_STATE = {
@@ -829,7 +829,7 @@
       renderVotingCards();
     }
 
-    // 送出投票並寫入 GAS (修復 CORS 問題)
+    // 送出投票並寫入 GAS
     async function handleVoteSubmit(e) {
       e.preventDefault();
 
@@ -1123,7 +1123,7 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-    // 穩定的明文登入驗證
+    // 明文登入驗證 (twlean / lean25553000!)
     function handleAdminLogin(e) {
       e.preventDefault();
       const user = document.getElementById('adminUser').value.trim();
@@ -1266,7 +1266,7 @@
       }
     }
 
-    // 後台名冊重新整理 (非同步更新，不會被登出)
+    // 後台歷程免刷頁同步更新
     async function refreshAdminLogs() {
       const icon = document.getElementById('refresh-log-icon');
       if (icon) icon.classList.add('animate-spin');
@@ -1337,7 +1337,6 @@
       lucide.createIcons();
     }
 
-    // 個別解鎖並通知 GAS 扣票 (修復 CORS)
     function unlockSingleVoter(index) {
       const record = APP_STATE.votedRecords[index];
       if (!record) return;
