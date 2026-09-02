@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 精實國際醫療高峰會 - 投稿人氣獎票選活動</title>
-  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SheetJS for Excel Import -->
@@ -21,7 +20,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Noto Sans TC"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            sans: ['"Noto Sans TC"', 'sans-serif'],
             serif: ['"Noto Serif TC"', 'serif'],
           },
           colors: {
@@ -53,43 +52,42 @@
       background-size: 20px 20px;
       user-select: none;
       -webkit-user-select: none;
-      font-family: 'Noto Sans TC', sans-serif;
-    }
-    h1, h2, h3, .font-serif-header {
-      font-family: 'Noto Serif TC', serif;
     }
   </style>
 </head>
 <body class="text-wabi-text font-sans antialiased min-h-screen flex flex-col selection:bg-wabi-indigo selection:text-white">
 
-  <!-- 頁首頂部導覽列 (已移除「精」ICON，字體統一) -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-wabi-border transition-all">
+  <!-- =============================== -->
+  <!-- 頁首頂部導覽列 (Navigation) -->
+  <!-- =============================== -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-wabi-border transition-all">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('vote')">
         <div>
-          <h1 class="text-base sm:text-xl font-serif font-bold text-wabi-indigo tracking-tight">2026 精實國際醫療高峰會</h1>
-          <span class="text-[11px] sm:text-xs tracking-wider text-wabi-pine block font-medium">2026 International Lean Healthcare Summit (Asia)</span>
+          <h1 class="text-base sm:text-lg font-serif font-bold text-wabi-indigo tracking-tight">2026 精實國際醫療高峰會</h1>
+          <span class="text-[11px] tracking-wider text-wabi-pine font-medium block">2026 International Lean Healthcare Summit (Asia)</span>
         </div>
       </div>
       
       <!-- 選單切換按鈕 -->
       <nav class="flex items-center gap-1 sm:gap-2">
-        <button id="nav-vote" onclick="switchTab('vote')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm">
+        <button id="nav-vote" onclick="switchTab('vote')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm">
           <i data-lucide="check-square" class="w-4 h-4"></i>
           <span>進行投票</span>
         </button>
-        <button id="nav-results" onclick="switchTab('results')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5">
+        <button id="nav-results" onclick="switchTab('results')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5">
           <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
           <span>即時票況</span>
         </button>
-        <button id="nav-admin" onclick="openAdminModal()" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5">
-          <i data-lucide="shield-check" class="w-4 h-4"></i>
+        <button id="nav-admin" onclick="openAdminModal()" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
           <span>後台管理</span>
         </button>
       </nav>
     </div>
   </header>
 
+  <!-- 主內容容器 -->
   <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-10">
 
     <!-- =============================== -->
@@ -97,16 +95,9 @@
     <!-- =============================== -->
     <section id="tab-vote-content" class="space-y-8">
       
-      <!-- 投票狀態動態指示條 -->
-      <div id="voting-status-banner" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium text-center shadow-sm flex items-center justify-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-        <span id="voting-status-text">連線雲端資料庫檢查中...</span>
-      </div>
-
-      <!-- 頂部活動簡介與規範排版 -->
+      <!-- 頂部活動簡介與重要須知 -->
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border relative overflow-hidden">
         <div class="absolute -right-12 -top-12 w-32 h-32 bg-wabi-indigoLight rounded-full opacity-60 pointer-events-none"></div>
-        
         <div class="flex items-start gap-4 mb-4">
           <div class="p-2.5 rounded-xl bg-wabi-indigo/10 text-wabi-indigo hidden sm:block">
             <i data-lucide="award" class="w-7 h-7"></i>
@@ -125,14 +116,17 @@
           本次大會匯集全國醫療院所推動精實醫療之成果，為讓更多專家/同業相互觀摩切磋，今年度持續辦理「投稿最佳人氣獎」票選活動，邀請您共襄盛舉！
         </p>
 
-        <!-- 規範與獎項說明 -->
+        <!-- 詳細須知與聯絡資訊 -->
         <div class="mt-6 pt-6 border-t border-wabi-border/80 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
           <div class="space-y-2 bg-wabi-base/60 p-4 rounded-xl border border-wabi-border/60">
             <div class="flex items-center gap-2 text-wabi-indigo font-bold">
               <i data-lucide="clock" class="w-4 h-4 text-wabi-vermilion"></i>
               <span>投票時間</span>
             </div>
-            <p class="text-wabi-muted pl-6">2025年12月5日(五) 08:00-16:15<br><span class="text-wabi-vermilion font-medium">(截至口頭發表最後一組報告完畢為準)</span></p>
+            <p id="voting-time-display" class="text-wabi-muted pl-6">
+              2025年12月5日(五) 08:00-16:15<br>
+              <span class="text-wabi-vermilion font-medium">(截至口頭發表最後一組報告完畢為準)</span>
+            </p>
 
             <div class="flex items-center gap-2 text-wabi-indigo font-bold pt-2">
               <i data-lucide="trophy" class="w-4 h-4 text-wabi-gold"></i>
@@ -154,7 +148,7 @@
           </div>
         </div>
 
-        <!-- 聯絡窗口與主辦單位 -->
+        <!-- 聯絡人與主辦單位 -->
         <div class="mt-4 pt-4 border-t border-wabi-border/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-wabi-muted">
           <div>
             <span class="font-bold text-wabi-text">聯絡資訊：</span>
@@ -166,19 +160,20 @@
         </div>
       </div>
 
-      <!-- 投票填表區塊 -->
+      <!-- 投票填表主區域 -->
       <form id="votingForm" onsubmit="handleVoteSubmit(event)" class="space-y-8">
         
-        <!-- 身分驗證 (僅保留 EMAIL，自動格式檢驗) -->
+        <!-- 身分驗證 (僅留 Email 與格式識別) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
               <span class="w-7 h-7 rounded-full bg-wabi-indigo text-white text-xs font-serif font-bold flex items-center justify-center">1</span>
               <h3 class="text-base sm:text-lg font-serif font-bold text-wabi-indigo">驗證投票者身分</h3>
             </div>
+            <span id="device-status-tag" class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">系統線上運作中</span>
           </div>
 
-          <div class="max-w-md">
+          <div>
             <label for="voterEmail" class="block text-xs font-bold uppercase tracking-wider text-wabi-muted mb-1.5">
               電子信箱 Email <span class="text-wabi-vermilion">*</span>
             </label>
@@ -189,66 +184,65 @@
                 id="voterEmail" 
                 required 
                 placeholder="name@hospital.org.tw" 
+                oninput="validateEmailFormat()"
                 class="w-full pl-10 pr-4 py-2.5 bg-wabi-base/40 border border-wabi-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-wabi-indigo/30 focus:border-wabi-indigo transition"
-                oninput="validateEmailInput()"
               />
             </div>
-            <p id="email-error-msg" class="text-[11px] text-wabi-vermilion mt-1 hidden font-semibold">請輸入正確的 Email 格式</p>
-            <p class="text-[11px] text-wabi-muted mt-1">每一 Email 僅限投 1 次，完成後可於下方進行修改。</p>
+            <p id="email-feedback" class="text-[11px] text-wabi-muted mt-1">請輸入正確 Email 格式，送出後即記錄於雲端庫</p>
           </div>
         </div>
 
-        <!-- 口頭發表投票 (5 編號一列，醒目實心底色) -->
+        <!-- 口頭發表投票 (B 系列, 5 列網格) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
               <span class="w-7 h-7 rounded-full bg-wabi-indigo text-white text-xs font-serif font-bold flex items-center justify-center">2</span>
               <div>
                 <h3 class="text-base sm:text-lg font-serif font-bold text-wabi-indigo">口頭發表投票（限投 1 票）</h3>
-                <p class="text-xs text-wabi-muted">請點選您支持的口頭發表組別編號</p>
+                <p class="text-xs text-wabi-muted">請點選投稿編號選取您支持之發表組別</p>
               </div>
             </div>
-            <span id="oralBadge" class="text-xs font-semibold px-2.5 py-1 rounded bg-wabi-indigoLight text-wabi-indigo">尚未選取</span>
+            <span id="selected-oral-badge" class="text-xs font-bold px-2.5 py-1 rounded bg-wabi-indigoLight text-wabi-indigo">單選</span>
           </div>
 
-          <!-- 5 編號一列網格 -->
-          <div id="oralGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-2">
-            <!-- JS 動態生成按鈕 -->
+          <!-- 5 列適應式網格容器 -->
+          <div id="oralList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
+            <!-- JS 動態生成 5 列按鈕 -->
           </div>
         </div>
 
-        <!-- 海報發表投票 (5 編號一列，醒目實心底色) -->
+        <!-- 海報發表投票 (C 系列, 5 列網格) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
-              <span class="w-7 h-7 rounded-full bg-wabi-pine text-white text-xs font-serif font-bold flex items-center justify-center">3</span>
+              <span class="w-7 h-7 rounded-full bg-wabi-indigo text-white text-xs font-serif font-bold flex items-center justify-center">3</span>
               <div>
-                <h3 class="text-base sm:text-lg font-serif font-bold text-wabi-pine">海報發表投票（限投 1 票）</h3>
-                <p class="text-xs text-wabi-muted">請點選您支持的海報發表作品編號</p>
+                <h3 class="text-base sm:text-lg font-serif font-bold text-wabi-indigo">海報發表投票（限投 1 票）</h3>
+                <p class="text-xs text-wabi-muted">請點選投稿編號選取您支持之發表組別</p>
               </div>
             </div>
-            <span id="posterBadge" class="text-xs font-semibold px-2.5 py-1 rounded bg-wabi-pine/10 text-wabi-pine">尚未選取</span>
+            <span id="selected-poster-badge" class="text-xs font-bold px-2.5 py-1 rounded bg-wabi-pine/10 text-wabi-pine">單選</span>
           </div>
 
-          <!-- 5 編號一列網格 -->
-          <div id="posterGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-2">
-            <!-- JS 動態生成按鈕 -->
+          <!-- 5 列適應式網格容器 -->
+          <div id="posterList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
+            <!-- JS 動態生成 5 列按鈕 -->
           </div>
         </div>
 
-        <!-- 送出與修改投票按鈕區 -->
+        <!-- 送出與修改投票控制區 -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-          <div class="text-xs text-wabi-muted flex items-center gap-1.5">
-            <i data-lucide="shield-check" class="w-4 h-4 text-wabi-pine"></i>
-            <span id="votePromptText">同一裝置僅限投一次</span>
+          <div id="voted-summary-box" class="text-xs text-wabi-muted hidden sm:flex items-center gap-1.5 bg-wabi-base px-3 py-2 rounded-xl border border-wabi-border">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-wabi-pine"></i>
+            <span id="voted-summary-text">您已完成投票</span>
           </div>
-          
+
           <div class="flex items-center gap-3 w-full sm:w-auto">
             <button 
               type="button" 
               id="modifyVoteBtn"
-              onclick="enableModifyVote()"
-              class="hidden px-5 py-3 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5"
+              onclick="handleModifyVote()"
+              class="hidden px-5 py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-serif font-bold text-sm rounded-xl shadow-md transition-all active:scale-95 items-center gap-1.5"
             >
               <i data-lucide="edit-3" class="w-4 h-4"></i>
               <span>修改投票</span>
@@ -257,7 +251,7 @@
             <button 
               type="submit" 
               id="submitVoteBtn"
-              class="flex-1 sm:flex-none px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-bold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group"
+              class="w-full sm:w-auto px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-serif font-bold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-98"
             >
               <span>確認並送出投票</span>
               <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
@@ -269,36 +263,45 @@
     </section>
 
     <!-- =============================== -->
-    <!-- TAB 2: 即時票況排行榜 (Live Rank) -->
+    <!-- TAB 2: 即時票況排行榜 (Live Rank & Settlement Mode) -->
     <!-- =============================== -->
     <section id="tab-results-content" class="hidden space-y-8">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
+        
+        <!-- 動態開票/結算 Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-wabi-border pb-6">
           <div>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-wabi-vermilion/10 text-wabi-vermilion text-xs font-semibold mb-2">
+            <div id="resultsHeaderBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-wabi-vermilion/10 text-wabi-vermilion text-xs font-semibold mb-2">
               <span class="w-2 h-2 rounded-full bg-wabi-vermilion animate-ping"></span> 即時戰況動態
             </div>
-            <h2 class="text-xl sm:text-2xl font-serif font-black text-wabi-indigo">
+            <h2 id="resultsHeaderTitle" class="text-xl sm:text-2xl font-serif font-black text-wabi-indigo">
               投稿人氣獎 即時得票統計
             </h2>
-            <p class="text-xs sm:text-sm text-wabi-muted mt-1">
-              發表編號前方跳動圖示代表前 3 名（票數需高於 0）
+            <p id="resultsHeaderDesc" class="text-xs sm:text-sm text-wabi-muted mt-1">
+              依據發表編號得票數按票數高低即時排序 (口頭與海報各取第 1 名)
             </p>
           </div>
 
-          <!-- 數據檢視與排序 -->
-          <div class="flex items-center gap-3">
-            <button onclick="toggleResultSort('rank')" id="btn-sort-rank" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-wabi-indigo text-white shadow-sm transition">
-              按得票高低
+          <!-- 統計總覽與切換排序模式 -->
+          <div class="flex items-center gap-2">
+            <div class="bg-wabi-base p-2.5 rounded-xl text-center min-w-[85px] border border-wabi-border">
+              <span class="block text-[10px] text-wabi-muted font-medium">總投票人次</span>
+              <span id="totalVotersCount" class="text-lg font-serif font-black text-wabi-indigo">0</span>
+            </div>
+            <button onclick="toggleSortMode('rank')" id="btn-sort-rank" class="px-3 py-2 bg-wabi-indigo text-white rounded-xl text-xs font-bold transition shadow-sm">
+              依排行
             </button>
-            <button onclick="toggleResultSort('id')" id="btn-sort-id" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-wabi-base text-wabi-muted hover:text-wabi-indigo transition">
-              按編號順序
+            <button onclick="toggleSortMode('id')" id="btn-sort-id" class="px-3 py-2 bg-wabi-base text-wabi-muted hover:text-wabi-indigo rounded-xl text-xs font-bold transition">
+              依編號
             </button>
-            <button onclick="renderResults()" class="p-2 bg-wabi-indigoLight hover:bg-wabi-indigo hover:text-white text-wabi-indigo rounded-lg transition" title="重新整理">
+            <button onclick="fetchCloudData(); renderResults();" class="p-2 bg-wabi-indigoLight text-wabi-indigo rounded-xl text-xs font-bold hover:bg-wabi-indigo hover:text-white transition" title="重新整理數據">
               <i data-lucide="refresh-cw" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
+
+        <!-- 投票截止結算榮譽框 (僅於投票截止時動態生成) -->
+        <div id="winnerSpotlightContainer" class="hidden mt-6"></div>
 
         <!-- 切換口頭/海報榜單標籤 -->
         <div class="flex gap-2 my-6 p-1 bg-wabi-base rounded-xl border border-wabi-border max-w-md">
@@ -313,15 +316,15 @@
         </div>
 
         <!-- 排行清單容器 -->
-        <div id="rankListContainer" class="space-y-3">
-          <!-- JS 動態生成 -->
+        <div id="rankListContainer" class="space-y-4">
+          <!-- JS 動態生成排行榜項目 (支援同票同名次跳動獎牌) -->
         </div>
 
       </div>
     </section>
 
     <!-- =============================== -->
-    <!-- TAB 3: 後台管理主畫面 (登入後顯示) -->
+    <!-- TAB 3: 後台管理主畫面 -->
     <!-- =============================== -->
     <section id="tab-admin-content" class="hidden space-y-8">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
@@ -336,78 +339,63 @@
               發表組別管理與投票監控
             </h2>
           </div>
-          <button onclick="logoutAdmin()" class="px-4 py-2 border border-wabi-border hover:bg-red-50 hover:text-red-600 text-wabi-muted text-xs rounded-xl transition flex items-center gap-1.5 self-start sm:self-auto font-medium">
+          <button onclick="logoutAdmin()" class="px-4 py-2 border border-wabi-border hover:bg-red-50 hover:text-red-600 text-wabi-muted text-xs rounded-xl transition flex items-center gap-1.5 self-start sm:self-auto">
             <i data-lucide="log-out" class="w-4 h-4"></i>
             <span>登出後台</span>
           </button>
         </div>
 
-        <!-- 1. Google 試算表串接狀態 -->
-        <div class="my-6 p-5 rounded-2xl bg-wabi-base/80 border border-wabi-border space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
-              <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
-              <span>Google 試算表 API 正式連線狀態</span>
-            </h3>
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 已串接正式 API
-            </span>
-          </div>
-          <div class="p-2.5 bg-white rounded-xl border border-wabi-border font-mono text-[11px] text-slate-600 truncate">
-            https://script.google.com/macros/s/AKfycbyssEU748SIPWKPg6lOf0meS_1RqLLq94amDCRoRu-QuJ_m937sDPllJfPc9L_jjaGt/exec
-          </div>
-        </div>
-
-        <!-- 2. 投票起訖時間控制 -->
-        <div class="my-6 p-5 sm:p-6 bg-white rounded-2xl border border-wabi-border space-y-4">
+        <!-- 1. 投票開放起訖時間排程 -->
+        <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border space-y-3">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
-            <i data-lucide="calendar-clock" class="w-4 h-4 text-wabi-pine"></i>
-            <span>投票開放時間排程控制</span>
+            <i data-lucide="calendar" class="w-4 h-4 text-wabi-pine"></i>
+            <span>投票起訖時間排程設定</span>
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-wabi-muted mb-1 font-medium">開始時間</label>
-              <input type="datetime-local" id="vote-start-time" class="w-full px-3 py-2 bg-wabi-base border border-wabi-border rounded-xl text-xs focus:outline-none focus:border-wabi-indigo">
+              <label class="block text-xs font-medium text-wabi-muted mb-1">開始開放時間</label>
+              <input type="datetime-local" id="admin-start-time" class="w-full px-3 py-2 bg-white border border-wabi-border rounded-xl text-xs focus:ring-1 focus:ring-wabi-indigo">
             </div>
             <div>
-              <label class="block text-xs text-wabi-muted mb-1 font-medium">結束時間</label>
-              <input type="datetime-local" id="vote-end-time" class="w-full px-3 py-2 bg-wabi-base border border-wabi-border rounded-xl text-xs focus:outline-none focus:border-wabi-indigo">
+              <label class="block text-xs font-medium text-wabi-muted mb-1">截止投票時間</label>
+              <input type="datetime-local" id="admin-end-time" class="w-full px-3 py-2 bg-white border border-wabi-border rounded-xl text-xs focus:ring-1 focus:ring-wabi-indigo">
             </div>
           </div>
-          <div class="text-right">
-            <button onclick="saveTimeSettings()" class="px-4 py-2 bg-wabi-indigo hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition">
-              儲存時間設定
+          <div class="text-right pt-1">
+            <button type="button" onclick="saveScheduleSettings()" class="px-4 py-2 bg-wabi-indigo hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-sm active:scale-95">
+              儲存時間排程
             </button>
           </div>
         </div>
 
-        <!-- 3. Excel 批次匯入專區 -->
-        <div class="my-6 p-5 sm:p-6 bg-white rounded-2xl border border-wabi-border space-y-3">
+        <!-- 2. Excel 檔案上傳解析 -->
+        <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border space-y-3">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
-            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i>
-            <span>匯入投稿名單 (Excel / CSV)</span>
+            <i data-lucide="file-spread-sheet" class="w-4 h-4 text-wabi-pine"></i>
+            <span>匯入投稿編號 (Excel / CSV 批次上傳)</span>
           </h3>
-          <p class="text-xs text-wabi-muted">選擇包含「編號」欄位之 Excel 檔，將按 B/C 字首自動對應發表類別。</p>
-          <div class="flex flex-col sm:flex-row items-center gap-3">
+          <p class="text-xs text-wabi-muted leading-relaxed">
+            上傳包含投稿編號之 Excel 檔（欄位標題含 <code>id</code> 或 <code>編號</code>，B 開頭自動歸為口頭發表，C 開頭自動歸為海報發表）。
+          </p>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             <input 
               type="file" 
-              id="excel-file-input" 
-              accept=".xlsx, .xls, .csv" 
-              class="block w-full text-xs text-wabi-muted file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-wabi-indigoLight file:text-wabi-indigo hover:file:bg-indigo-100"
-            />
-            <button onclick="importExcelData()" class="w-full sm:w-auto shrink-0 px-4 py-2 bg-wabi-pine hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition">
+              id="excelFileInput" 
+              accept=".xlsx, .xls, .csv"
+              class="block w-full text-xs text-wabi-muted file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-wabi-indigoLight file:text-wabi-indigo hover:file:bg-wabi-indigo hover:file:text-white transition"
+            >
+            <button type="button" onclick="importExcelSubmissions()" class="px-4 py-2 bg-wabi-pine hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shrink-0 shadow-sm active:scale-95">
               解析並匯入
             </button>
           </div>
         </div>
 
-        <!-- 4. 手動新增發表組別 (前綴嚴格綁定) -->
+        <!-- 3. 手動新增發表項目 (強制前綴驗證) -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border">
-          <h3 class="text-sm font-serif font-bold text-wabi-indigo mb-1 flex items-center gap-2">
+          <h3 class="text-sm font-serif font-bold text-wabi-indigo mb-3 flex items-center gap-2">
             <i data-lucide="plus-circle" class="w-4 h-4 text-wabi-pine"></i>
-            <span>手動新增發表組別編號</span>
+            <span>新增發表組別編號</span>
           </h3>
-          <p class="text-[11px] text-wabi-muted mb-3">口頭發表僅允許 B 開頭（如 B-06），海報發表僅允許 C 開頭（如 C-06）。輸入純數字將自動加上對應前綴。</p>
           <form onsubmit="handleAddNewItem(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label class="block text-xs text-wabi-muted mb-1 font-medium">發表類別</label>
@@ -417,11 +405,11 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs text-wabi-muted mb-1 font-medium">發表編號 (例: B-06 / C-06)</label>
-              <input type="text" id="newCode" required placeholder="如：B-06 或 C-06" class="w-full px-3 py-2 bg-white border border-wabi-border rounded-xl text-xs focus:ring-1 focus:ring-wabi-indigo" />
+              <label class="block text-xs text-wabi-muted mb-1 font-medium">發表編號 (強制前綴)</label>
+              <input type="text" id="newCode" required placeholder="口頭請填 B-06，海報請填 C-06" class="w-full px-3 py-2 bg-white border border-wabi-border rounded-xl text-xs focus:ring-1 focus:ring-wabi-indigo" />
             </div>
             <div class="flex items-end">
-              <button type="submit" class="w-full py-2 bg-wabi-pine hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+              <button type="submit" class="w-full py-2 bg-wabi-pine hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 active:scale-95">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 <span>新增發表項目</span>
               </button>
@@ -429,38 +417,32 @@
           </form>
         </div>
 
-        <!-- 5. 兩類別發表項目與得票清單 (含單項歸零與刪除) -->
+        <!-- 4. 發表項目管理清單 (雙類別單獨管理) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6">
-          <!-- 口頭組別清單 -->
-          <div class="border border-wabi-border rounded-2xl p-4 bg-white">
+          <div class="border border-wabi-border rounded-xl p-4 bg-white">
             <div class="flex items-center justify-between mb-3">
               <h4 class="font-serif font-bold text-sm text-wabi-indigo flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-wabi-indigo"></span> 口頭發表目前項目與得票
               </h4>
-              <span id="oralCountBadge" class="text-xs text-wabi-muted font-medium">0 項</span>
+              <span id="oralCountBadge" class="text-xs text-wabi-muted">0 項</span>
             </div>
-            <div id="adminOralList" class="space-y-2 max-h-64 overflow-y-auto pr-1">
-              <!-- 動態渲染 -->
-            </div>
+            <div id="adminOralList" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
           </div>
 
-          <!-- 海報組別清單 -->
-          <div class="border border-wabi-border rounded-2xl p-4 bg-white">
+          <div class="border border-wabi-border rounded-xl p-4 bg-white">
             <div class="flex items-center justify-between mb-3">
               <h4 class="font-serif font-bold text-sm text-wabi-pine flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-wabi-pine"></span> 海報發表目前項目與得票
               </h4>
-              <span id="posterCountBadge" class="text-xs text-wabi-muted font-medium">0 項</span>
+              <span id="posterCountBadge" class="text-xs text-wabi-muted">0 項</span>
             </div>
-            <div id="adminPosterList" class="space-y-2 max-h-64 overflow-y-auto pr-1">
-              <!-- 動態渲染 -->
-            </div>
+            <div id="adminPosterList" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
           </div>
         </div>
 
-        <!-- 6. 投票歷史紀錄與鎖定名冊 (含個別解鎖) -->
+        <!-- 5. 投票歷史紀錄與鎖定名冊 (含即時更新按鈕) -->
         <div class="pt-6 border-t border-wabi-border">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-1.5">
                 <i data-lucide="list" class="w-4 h-4"></i>
@@ -468,7 +450,21 @@
               </h3>
               <p class="text-[11px] text-wabi-muted mt-0.5">點選「個別解鎖」可同步解除該 IP/Email 鎖定並自雲端扣回對應票數。</p>
             </div>
-            <span id="voteLogSummary" class="text-xs text-wabi-muted font-mono bg-wabi-base px-2.5 py-1 rounded-lg border border-wabi-border self-start sm:self-auto">共 0 筆投票紀錄</span>
+            
+            <div class="flex items-center gap-2">
+              <button 
+                type="button" 
+                onclick="refreshAdminLogs()" 
+                id="btn-refresh-logs"
+                class="px-3.5 py-1.5 bg-wabi-indigoLight hover:bg-wabi-indigo hover:text-white text-wabi-indigo rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                title="即時同步雲端最新投票名冊，無需重新整理網頁"
+              >
+                <i id="refresh-log-icon" data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>更新歷程資料</span>
+              </button>
+
+              <span id="voteLogSummary" class="text-xs text-wabi-muted font-mono bg-wabi-base px-2.5 py-1.5 rounded-xl border border-wabi-border">共 0 筆投票紀錄</span>
+            </div>
           </div>
 
           <div class="overflow-x-auto border border-wabi-border rounded-xl">
@@ -476,7 +472,7 @@
               <thead class="bg-wabi-base text-wabi-muted uppercase font-semibold">
                 <tr>
                   <th class="px-4 py-3">時間</th>
-                  <th class="px-4 py-3">EMAIL</th>
+                  <th class="px-4 py-3">Email</th>
                   <th class="px-4 py-3">口頭投票</th>
                   <th class="px-4 py-3">海報投票</th>
                   <th class="px-4 py-3">鎖定 IP</th>
@@ -484,25 +480,9 @@
                 </tr>
               </thead>
               <tbody id="voteLogTableBody" class="divide-y divide-wabi-border/60">
-                <!-- 動態注入紀錄 -->
+                <!-- 動態注入投票日誌與個別解鎖按鈕 -->
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <!-- 7. 重設與清空專區 -->
-        <div class="mt-8 p-5 bg-red-50/50 rounded-2xl border border-red-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <h4 class="text-xs font-serif font-bold text-red-900">大會投票數據重設與清理</h4>
-            <p class="text-[11px] text-red-700/80 mt-0.5">正式開展前，可清空所有投票紀錄並將得票數歸零。</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="confirmResetVotesOnly()" class="px-3 py-1.5 bg-white border border-amber-300 text-amber-800 rounded-lg text-xs font-bold hover:bg-amber-50">
-              僅得票數歸零
-            </button>
-            <button onclick="confirmResetAllData()" class="px-3 py-1.5 bg-wabi-vermilion text-white rounded-lg text-xs font-bold hover:bg-red-800">
-              全部歸零與解鎖
-            </button>
           </div>
         </div>
 
@@ -511,10 +491,12 @@
 
   </main>
 
-  <!-- Modal 1: 精簡純淨管理員登入 Modal -->
+  <!-- =============================== -->
+  <!-- 彈出視窗 1: 管理員登入 Modal (僅帳號與密碼) -->
+  <!-- =============================== -->
   <div id="adminLoginModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-wabi-border">
-      <div class="flex items-center justify-between mb-4">
+    <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-wabi-border transform transition-all">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-wabi-border">
         <h3 class="font-serif font-bold text-base text-wabi-indigo">大會管理員登入</h3>
         <button onclick="closeAdminModal()" class="text-wabi-muted hover:text-wabi-text">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -534,10 +516,10 @@
           帳號或密碼錯誤，請重新確認！
         </div>
         <div class="pt-2 flex gap-2">
-          <button type="button" onclick="closeAdminModal()" class="flex-1 py-2.5 bg-wabi-base text-wabi-muted hover:bg-gray-200 rounded-xl text-xs font-bold">
+          <button type="button" onclick="closeAdminModal()" class="flex-1 py-2.5 bg-wabi-base text-wabi-muted hover:bg-gray-200 rounded-xl text-xs font-bold transition">
             取消
           </button>
-          <button type="submit" class="flex-1 py-2.5 bg-wabi-indigo text-white rounded-xl text-xs font-bold shadow-sm hover:bg-slate-800">
+          <button type="submit" class="flex-1 py-2.5 bg-wabi-indigo hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-sm">
             登入後台
           </button>
         </div>
@@ -545,15 +527,36 @@
     </div>
   </div>
 
-  <!-- Modal 2: 訊息提示 Modal (取代原生 alert) -->
-  <div id="messageModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-2xl p-6 text-center shadow-2xl border border-wabi-border">
-      <div id="msgIconContainer" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-3 bg-emerald-100 text-emerald-700">
-        <i id="msgIcon" data-lucide="check" class="w-6 h-6"></i>
+  <!-- 彈出視窗 2: 二次確認對話框 -->
+  <div id="confirmModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl border border-wabi-border text-center">
+      <div id="confirmIconContainer" class="w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-red-100 text-wabi-vermilion">
+        <i id="confirmIcon" data-lucide="alert-triangle" class="w-7 h-7"></i>
       </div>
-      <h3 id="msgTitle" class="font-serif font-black text-base text-wabi-indigo mb-2">提示訊息</h3>
-      <p id="msgDesc" class="text-xs text-wabi-muted leading-relaxed mb-5 whitespace-pre-line text-left bg-wabi-base/60 p-3 rounded-xl border border-wabi-border/60">內容說明</p>
-      <button onclick="closeMessageModal()" class="w-full py-2.5 bg-wabi-indigo text-white font-bold text-xs rounded-xl shadow-md">
+      <h3 id="confirmTitle" class="font-serif font-black text-lg text-wabi-indigo mb-2">確認執行操作？</h3>
+      <p id="confirmDesc" class="text-xs sm:text-sm text-wabi-muted leading-relaxed mb-6 whitespace-pre-line text-left bg-wabi-base/60 p-3.5 rounded-xl border border-wabi-border/60">此動作將無法復原，請確認是否執行。</p>
+      
+      <div class="flex gap-3">
+        <button type="button" onclick="closeConfirmModal()" class="flex-1 py-2.5 bg-wabi-base hover:bg-gray-200 text-wabi-text text-xs font-bold rounded-xl transition">
+          取消操作
+        </button>
+        <button type="button" onclick="executeConfirmAction()" id="confirmExecuteBtn" class="flex-1 py-2.5 bg-wabi-vermilion hover:bg-red-800 text-white text-xs font-bold rounded-xl transition shadow-md">
+          確認執行
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈出視窗 3: 訊息提示 Modal -->
+  <div id="messageModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl p-6 sm:p-8 shadow-2xl border border-wabi-border text-center">
+      <div id="msgIconContainer" class="w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-wabi-pine/10 text-wabi-pine">
+        <i id="msgIcon" data-lucide="check" class="w-8 h-8"></i>
+      </div>
+      <h3 id="msgTitle" class="font-serif font-black text-lg sm:text-xl text-wabi-indigo mb-2">提示訊息</h3>
+      <p id="msgDesc" class="text-xs sm:text-sm text-wabi-muted leading-relaxed mb-6 whitespace-pre-line text-left bg-wabi-base/60 p-3.5 rounded-xl border border-wabi-border/60">操作已成功完成。</p>
+      
+      <button onclick="closeMessageModal()" class="w-full py-3 bg-wabi-indigo hover:bg-slate-800 text-white font-serif font-bold text-sm rounded-xl transition shadow-md active:scale-98">
         確定
       </button>
     </div>
@@ -561,9 +564,10 @@
 
   <!-- 頁腳 -->
   <footer class="bg-white border-t border-wabi-border py-6 mt-12 text-center text-xs text-wabi-muted">
-    <div class="max-w-5xl mx-auto px-4 space-y-1.5">
-      <p class="font-serif font-medium text-wabi-text">2026 精實國際醫療高峰會 (Asia)</p>
+    <div class="max-w-5xl mx-auto px-4 space-y-2">
+      <p class="font-serif font-medium text-wabi-text">2026 精實國際醫療高峰會 - 投稿人氣獎評選委員會</p>
       <p>主辦單位：臺北市立聯合醫院 ｜ 台灣精實醫務管理學會</p>
+      <p class="text-[11px] text-gray-400">© 2026 Lean Healthcare Summit. All Rights Reserved.</p>
     </div>
   </footer>
 
@@ -571,47 +575,70 @@
   <!-- 核心系統邏輯 (JavaScript) -->
   <!-- =============================== -->
   <script>
-    // 1. 鎖定右鍵
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    // 停用滑鼠右鍵點擊
+    document.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 內嵌式 Google Apps Script API 部署 URL
+    // 內嵌 Google Apps Script API 網址
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyssEU748SIPWKPg6lOf0meS_1RqLLq94amDCRoRu-QuJ_m937sDPllJfPc9L_jjaGt/exec";
 
-    // 預設發表組別清單 (B-01~B-10, C-01~C-10)
-    const defaultOralList = ["B-01", "B-02", "B-03", "B-04", "B-05", "B-06", "B-07", "B-08", "B-09", "B-10"];
-    const defaultPosterList = ["C-01", "C-02", "C-03", "C-04", "C-05", "C-06", "C-07", "C-08", "C-09", "C-10"];
-
-    // 系統全域雲端動態狀態 (完全棄用 localStorage，線上即時同步)
+    // 預設全域狀態 (無本機 localStorage 依賴，資料完全與雲端同步)
     const APP_STATE = {
-      userIP: "偵測中...",
+      userIP: '偵測中...',
       isAdminLoggedIn: false,
-      currentRankView: "oral",
-      currentSortMode: "rank",
-      oralList: [...defaultOralList],
-      posterList: [...defaultPosterList],
+      currentRankView: 'oral', // 'oral' | 'poster'
+      sortMode: 'rank',       // 'rank' | 'id'
+      
+      voteStartTime: '',
+      voteEndTime: '',
+
       selectedOral: null,
       selectedPoster: null,
-      votesData: { oral: {}, poster: {} },
-      votedRecords: [],
-      lockedIPs: new Set(),
-      lockedEmails: new Set(),
-      currentUserEmail: "",
-      hasUserVotedOnline: false,
-      myVoteChoice: null,
-      voteStartTime: null,
-      voteEndTime: null
+
+      hasVoted: false,
+      myVotedRecord: null,
+
+      oralItems: [
+        { code: 'B-01', title: '口頭發表 B-01', votes: 0 },
+        { code: 'B-02', title: '口頭發表 B-02', votes: 0 },
+        { code: 'B-03', title: '口頭發表 B-03', votes: 0 },
+        { code: 'B-04', title: '口頭發表 B-04', votes: 0 },
+        { code: 'B-05', title: '口頭發表 B-05', votes: 0 },
+        { code: 'B-06', title: '口頭發表 B-06', votes: 0 },
+        { code: 'B-07', title: '口頭發表 B-07', votes: 0 },
+        { code: 'B-08', title: '口頭發表 B-08', votes: 0 },
+        { code: 'B-09', title: '口頭發表 B-09', votes: 0 },
+        { code: 'B-10', title: '口頭發表 B-10', votes: 0 }
+      ],
+
+      posterItems: [
+        { code: 'C-01', title: '海報發表 C-01', votes: 0 },
+        { code: 'C-02', title: '海報發表 C-02', votes: 0 },
+        { code: 'C-03', title: '海報發表 C-03', votes: 0 },
+        { code: 'C-04', title: '海報發表 C-04', votes: 0 },
+        { code: 'C-05', title: '海報發表 C-05', votes: 0 },
+        { code: 'C-06', title: '海報發表 C-06', votes: 0 },
+        { code: 'C-07', title: '海報發表 C-07', votes: 0 },
+        { code: 'C-08', title: '海報發表 C-08', votes: 0 },
+        { code: 'C-09', title: '海報發表 C-09', votes: 0 },
+        { code: 'C-10', title: '海報發表 C-10', votes: 0 }
+      ],
+
+      votedRecords: []
     };
 
+    let pendingConfirmAction = null;
     let pendingModalCallback = null;
 
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
       await fetchClientIP();
+      await fetchCloudData();
       renderVotingCards();
-      await fetchCloudDataAndRender();
+      renderResults();
+      renderAdminLists();
+      checkVotingTimeSchedule();
     });
 
-    // 取得與會者真實 IP 位址
     async function fetchClientIP() {
       try {
         const controller = new AbortController();
@@ -619,306 +646,408 @@
         const res = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
         clearTimeout(timeoutId);
         const data = await res.json();
-        if (data && data.ip) APP_STATE.userIP = data.ip;
-      } catch (e) {
-        APP_STATE.userIP = '192.168.' + Math.floor(Math.random() * 200 + 10) + '.' + Math.floor(Math.random() * 200 + 10);
+        APP_STATE.userIP = data.ip || getSimulatedIP();
+      } catch (err) {
+        APP_STATE.userIP = getSimulatedIP();
       }
     }
 
-    // Email 格式正則運算校驗
-    function validateEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    function getSimulatedIP() {
+      const stored = sessionStorage.getItem('__sim_ip');
+      if (stored) return stored;
+      const gen = `192.168.${Math.floor(Math.random() * 200) + 10}.${Math.floor(Math.random() * 250) + 2}`;
+      sessionStorage.setItem('__sim_ip', gen);
+      return gen;
     }
 
-    function validateEmailInput() {
-      const emailInput = document.getElementById('voterEmail').value.trim().toLowerCase();
-      const errEl = document.getElementById('email-error-msg');
-      if (emailInput && !validateEmail(emailInput)) {
-        errEl.classList.remove('hidden');
-      } else {
-        errEl.classList.add('hidden');
+    // SHA-256 雜湊密碼驗證 (twlean / lean25553000!)
+    const TARGET_USER_HASH = "682f6e91b65d6c5339df0673d6bc9f091c53e00cfb638fec033b000be088b75e";
+    const TARGET_PASS_HASH = "b78ed4e9a8f4c084e55e81f185ef30e527a4d5e865f1df649f8072efd02c0c7f";
+
+    // 純 JavaScript SHA-256 實作，確保在 file://、HTTP 或非 HTTPS 環境均能 100% 正常運行
+    function pureJsSHA256(ascii) {
+      function rightRotate(value, amount) {
+        return (value >>> amount) | (value << (32 - amount));
+      }
+      var mathPow = Math.pow;
+      var maxWord = mathPow(2, 32);
+      var lengthProperty = 'length';
+      var i, j;
+      var result = '';
+      var words = [];
+      var asciiBitLength = ascii[lengthProperty] * 8;
+      var hash = [
+        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+        0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+      ];
+      var k = [
+        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+      ];
+
+      ascii += '\x80';
+      while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+      for (i = 0; i < ascii[lengthProperty]; i++) {
+        j = ascii.charCodeAt(i);
+        words[i >> 2] |= j << ((3 - i % 4) * 8);
+      }
+      words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+      words[words[lengthProperty]] = (asciiBitLength);
+
+      for (j = 0; j < words[lengthProperty]; ) {
+        var w = words.slice(j, j += 16);
+        var oldHash = hash;
+        hash = hash.slice(0, 8);
+        for (i = 0; i < 64; i++) {
+          var w15 = w[i - 15], w2 = w[i - 2];
+          var a = hash[0], e = hash[4];
+          var temp1 = hash[7]
+            + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+            + ((e & hash[5]) ^ ((~e) & hash[6]))
+            + k[i]
+            + (w[i] = (i < 16) ? w[i] : (
+                w[i - 16]
+                + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                + w[i - 7]
+                + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+              ) | 0);
+          var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+            + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+
+          hash = [(temp1 + temp2) | 0].concat(hash);
+          hash[4] = (hash[4] + temp1) | 0;
+        }
+        for (i = 0; i < 8; i++) {
+          hash[i] = (hash[i] + oldHash[i]) | 0;
+        }
       }
 
-      // 線上比對是否已投過票
-      APP_STATE.currentUserEmail = emailInput;
-      checkEmailVoteStatus(emailInput);
-    }
-
-    // 嚴格前綴驗證與格式化輔助函式
-    function formatAndValidateCode(category, rawCode) {
-      let code = rawCode.trim().toUpperCase();
-      if (!code) return { valid: false, message: "請輸入發表編號！" };
-
-      if (category === 'oral') {
-        if (code.startsWith('C')) {
-          return { valid: false, message: "「口頭發表」類別之編號必須以 B 開頭（例如：B-06），不可以 C 開頭！" };
+      for (i = 0; i < 8; i++) {
+        for (j = 3; j >= 0; j--) {
+          var b = (hash[i] >> (j * 8)) & 255;
+          result += (b < 16 ? '0' : '') + b.toString(16);
         }
-        if (!code.startsWith('B')) {
-          if (/^\d+$/.test(code)) {
-            code = 'B-' + code.padStart(2, '0');
-          } else {
-            code = 'B-' + code;
-          }
-        } else if (/^B\d+$/.test(code)) {
-          const num = code.substring(1);
-          code = 'B-' + num.padStart(2, '0');
-        }
-        return { valid: true, code: code };
-      } else {
-        if (code.startsWith('B')) {
-          return { valid: false, message: "「海報發表」類別之編號必須以 C 開頭（例如：C-06），不可以 B 開頭！" };
-        }
-        if (!code.startsWith('C')) {
-          if (/^\d+$/.test(code)) {
-            code = 'C-' + code.padStart(2, '0');
-          } else {
-            code = 'C-' + code;
-          }
-        } else if (/^C\d+$/.test(code)) {
-          const num = code.substring(1);
-          code = 'C-' + num.padStart(2, '0');
-        }
-        return { valid: true, code: code };
       }
+      return result;
     }
 
-    // 從 Google Apps Script 雲端試算表拉取最新線上投票數據與發表項目 (無 localStorage)
-    async function fetchCloudDataAndRender() {
+    async function computeSHA256(str) {
       try {
-        const bannerText = document.getElementById('voting-status-text');
-        if (bannerText) bannerText.textContent = "連線雲端資料庫更新票況中...";
+        if (window.crypto && window.crypto.subtle && window.location.protocol === 'https:') {
+          const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+          return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+      } catch (err) {
+        // 遇到非安全環境自動降級處理
+      }
+      return pureJsSHA256(str);
+    }
 
-        const res = await fetch(DEFAULT_GAS_URL);
+    // 雲端試算表雙向資料拉取與同步
+    async function fetchCloudData() {
+      try {
+        const res = await fetch(DEFAULT_GAS_URL + "?action=getVotes");
         const data = await res.json();
-        
-        if (data && data.status === 'success' && data.records) {
-          const newVotes = { oral: {}, poster: {} };
-          APP_STATE.lockedIPs.clear();
-          APP_STATE.lockedEmails.clear();
 
-          data.records.forEach(r => {
-            if (r.oral) {
-              newVotes.oral[r.oral] = (newVotes.oral[r.oral] || 0) + 1;
-              if (!APP_STATE.oralList.includes(r.oral) && r.oral.startsWith('B')) {
-                APP_STATE.oralList.push(r.oral);
-              }
-            }
-            if (r.poster) {
-              newVotes.poster[r.poster] = (newVotes.poster[r.poster] || 0) + 1;
-              if (!APP_STATE.posterList.includes(r.poster) && r.poster.startsWith('C')) {
-                APP_STATE.posterList.push(r.poster);
-              }
-            }
-            if (r.ip) APP_STATE.lockedIPs.add(r.ip);
-            if (r.email) APP_STATE.lockedEmails.add(r.email.toLowerCase());
+        if (data && data.status === 'success') {
+          if (data.records) APP_STATE.votedRecords = data.records;
+          
+          // 計算得票數
+          const oralCounts = {};
+          const posterCounts = {};
+
+          APP_STATE.votedRecords.forEach(r => {
+            if (r.oralVote) oralCounts[r.oralVote] = (oralCounts[r.oralVote] || 0) + 1;
+            if (r.posterVote) posterCounts[r.posterVote] = (posterCounts[r.posterVote] || 0) + 1;
           });
 
-          APP_STATE.oralList.sort();
-          APP_STATE.posterList.sort();
+          APP_STATE.oralItems.forEach(item => {
+            item.votes = oralCounts[item.code] || 0;
+          });
+          APP_STATE.posterItems.forEach(item => {
+            item.votes = posterCounts[item.code] || 0;
+          });
 
-          APP_STATE.votesData = newVotes;
-          APP_STATE.votedRecords = data.records;
-
-          if (data.startTime) APP_STATE.voteStartTime = data.startTime;
-          if (data.endTime) APP_STATE.voteEndTime = data.endTime;
+          // 判斷目前裝置 IP 是否曾於雲端完成投票
+          const myRecord = APP_STATE.votedRecords.find(r => r.ip === APP_STATE.userIP);
+          if (myRecord) {
+            APP_STATE.hasVoted = true;
+            APP_STATE.myVotedRecord = myRecord;
+          }
         }
-      } catch (e) {
-        console.warn("雲端資料讀取通知：目前以動態模式運作中", e);
+      } catch (err) {
+        console.warn("雲端讀取微幅延遲，使用即時快取運算。");
       }
-      
-      renderVotingCards();
-      renderResults();
-      checkEmailVoteStatus(APP_STATE.currentUserEmail);
-      checkVotingTimeSchedule();
     }
 
-    // 依 Email 檢查線上是否已投過票
-    function checkEmailVoteStatus(email) {
-      if (!email || !validateEmail(email)) {
-        APP_STATE.hasUserVotedOnline = false;
-        APP_STATE.myVoteChoice = null;
-        syncFormVotingStatus();
-        return;
+    // 檢查投票起訖時間與狀態
+    function checkVotingTimeSchedule() {
+      const now = new Date();
+      const submitBtn = document.getElementById('submitVoteBtn');
+      const modifyBtn = document.getElementById('modifyVoteBtn');
+      const summaryBox = document.getElementById('voted-summary-box');
+      const summaryText = document.getElementById('voted-summary-text');
+      const timeDisplay = document.getElementById('voting-time-display');
+
+      let isTimeOpen = true;
+
+      if (APP_STATE.voteStartTime && new Date(APP_STATE.voteStartTime) > now) {
+        isTimeOpen = false;
+      }
+      if (APP_STATE.voteEndTime && new Date(APP_STATE.voteEndTime) <= now) {
+        isTimeOpen = false;
       }
 
-      const existingRecord = APP_STATE.votedRecords.find(r => r.email && r.email.toLowerCase() === email.toLowerCase());
-      if (existingRecord) {
-        APP_STATE.hasUserVotedOnline = true;
-        APP_STATE.myVoteChoice = { oral: existingRecord.oral, poster: existingRecord.poster };
+      if (APP_STATE.voteStartTime && APP_STATE.voteEndTime && timeDisplay) {
+        timeDisplay.innerHTML = `${APP_STATE.voteStartTime.replace('T', ' ')} ~ ${APP_STATE.voteEndTime.replace('T', ' ')}<br><span class="text-wabi-vermilion font-medium">(截至口頭發表最後一組報告完畢為準)</span>`;
+      }
+
+      if (APP_STATE.hasVoted) {
+        submitBtn.disabled = true;
+        submitBtn.className = "w-full sm:w-auto px-8 py-3.5 bg-gray-300 text-gray-500 font-serif font-bold text-base rounded-xl cursor-not-allowed shadow-none";
+        submitBtn.innerHTML = `<span>已完成投票</span>`;
+
+        if (isTimeOpen) {
+          modifyBtn.classList.remove('hidden');
+          modifyBtn.classList.add('flex');
+        } else {
+          modifyBtn.classList.add('hidden');
+          modifyBtn.classList.remove('flex');
+        }
+
+        if (summaryBox) {
+          summaryBox.classList.remove('hidden');
+          summaryBox.classList.add('flex');
+          summaryText.textContent = `本裝置已完成投票 (口頭：${APP_STATE.myVotedRecord?.oralVote} / 海報：${APP_STATE.myVotedRecord?.posterVote})`;
+        }
+      } else if (!isTimeOpen) {
+        submitBtn.disabled = true;
+        submitBtn.className = "w-full sm:w-auto px-8 py-3.5 bg-gray-300 text-gray-500 font-serif font-bold text-base rounded-xl cursor-not-allowed shadow-none";
+        submitBtn.innerHTML = `<span>非開放投票時段</span>`;
+        modifyBtn.classList.add('hidden');
+        modifyBtn.classList.remove('flex');
       } else {
-        APP_STATE.hasUserVotedOnline = false;
-        APP_STATE.myVoteChoice = null;
+        submitBtn.disabled = false;
+        submitBtn.className = "w-full sm:w-auto px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-serif font-bold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-98";
+        submitBtn.innerHTML = `<span>確認並送出投票</span><i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>`;
+        modifyBtn.classList.add('hidden');
+        modifyBtn.classList.remove('flex');
+        if (summaryBox) summaryBox.classList.add('hidden');
       }
-      syncFormVotingStatus();
+
+      lucide.createIcons();
     }
 
-    // 渲染口頭與海報投票區塊 (5 編號一列，選中時醒目實心底色)
+    function switchTab(tab) {
+      const voteTab = document.getElementById('tab-vote-content');
+      const resultsTab = document.getElementById('tab-results-content');
+      const adminTab = document.getElementById('tab-admin-content');
+
+      const btnVote = document.getElementById('nav-vote');
+      const btnResults = document.getElementById('nav-results');
+      const btnAdmin = document.getElementById('nav-admin');
+
+      [btnVote, btnResults, btnAdmin].forEach(b => {
+        b.className = "px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5";
+      });
+
+      voteTab.classList.add('hidden');
+      resultsTab.classList.add('hidden');
+      adminTab.classList.add('hidden');
+
+      if (tab === 'vote') {
+        voteTab.classList.remove('hidden');
+        btnVote.className = "px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
+        checkVotingTimeSchedule();
+      } else if (tab === 'results') {
+        resultsTab.classList.remove('hidden');
+        btnResults.className = "px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
+        renderResults();
+      } else if (tab === 'admin') {
+        adminTab.classList.remove('hidden');
+        btnAdmin.className = "px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
+        renderAdminLists();
+      }
+      lucide.createIcons();
+    }
+
+    // Email 格式驗證
+    function validateEmailFormat() {
+      const emailInput = document.getElementById('voterEmail');
+      const feedback = document.getElementById('email-feedback');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailInput.value) {
+        feedback.textContent = "請輸入正確 Email 格式，送出後即記錄於雲端庫";
+        feedback.className = "text-[11px] text-wabi-muted mt-1";
+        return false;
+      }
+
+      if (emailRegex.test(emailInput.value.trim())) {
+        feedback.textContent = "✓ 電子信箱格式正確";
+        feedback.className = "text-[11px] text-emerald-600 font-semibold mt-1";
+        return true;
+      } else {
+        feedback.textContent = "✕ 電子信箱格式有誤，請輸入完整 Email (例: name@hospital.org.tw)";
+        feedback.className = "text-[11px] text-wabi-vermilion font-semibold mt-1";
+        return false;
+      }
+    }
+
+    // 渲染 5 列適應式選取網格
     function renderVotingCards() {
-      const oralGrid = document.getElementById('oralGrid');
-      if (oralGrid) {
-        oralGrid.innerHTML = APP_STATE.oralList.map(code => {
-          const isSelected = APP_STATE.selectedOral === code;
-          const btnClass = isSelected 
-            ? "py-3 px-2 rounded-xl border border-wabi-indigo bg-wabi-indigo text-white font-bold text-sm shadow-md transition-all scale-[1.02]"
-            : "py-3 px-2 rounded-xl border border-wabi-border bg-white text-wabi-text hover:bg-wabi-indigoLight font-bold text-sm transition-all";
-          return `<button type="button" onclick="selectOral('${code}')" class="${btnClass}">${code}</button>`;
-        }).join('');
-      }
+      const oralContainer = document.getElementById('oralList');
+      oralContainer.innerHTML = APP_STATE.oralItems.map(item => {
+        const isSelected = APP_STATE.selectedOral === item.code;
+        const btnClass = isSelected 
+          ? "py-3 rounded-xl border border-wabi-indigo font-bold text-sm bg-wabi-indigo text-white shadow-md scale-[1.02] transition-all"
+          : "py-3 rounded-xl border border-wabi-border font-medium text-sm bg-white text-wabi-indigo hover:bg-wabi-indigoLight transition-all";
+        return `<button type="button" onclick="selectOralItem('${item.code}')" class="${btnClass}">${item.code}</button>`;
+      }).join('');
 
-      const posterGrid = document.getElementById('posterGrid');
-      if (posterGrid) {
-        posterGrid.innerHTML = APP_STATE.posterList.map(code => {
-          const isSelected = APP_STATE.selectedPoster === code;
-          const btnClass = isSelected 
-            ? "py-3 px-2 rounded-xl border border-wabi-pine bg-wabi-pine text-white font-bold text-sm shadow-md transition-all scale-[1.02]"
-            : "py-3 px-2 rounded-xl border border-wabi-border bg-white text-wabi-text hover:bg-emerald-50 font-bold text-sm transition-all";
-          return `<button type="button" onclick="selectPoster('${code}')" class="${btnClass}">${code}</button>`;
-        }).join('');
-      }
+      const posterContainer = document.getElementById('posterList');
+      posterContainer.innerHTML = APP_STATE.posterItems.map(item => {
+        const isSelected = APP_STATE.selectedPoster === item.code;
+        const btnClass = isSelected 
+          ? "py-3 rounded-xl border border-wabi-pine font-bold text-sm bg-wabi-pine text-white shadow-md scale-[1.02] transition-all"
+          : "py-3 rounded-xl border border-wabi-border font-medium text-sm bg-white text-wabi-pine hover:bg-emerald-50 transition-all";
+        return `<button type="button" onclick="selectPosterItem('${item.code}')" class="${btnClass}">${item.code}</button>`;
+      }).join('');
     }
 
-    function selectOral(code) {
-      if (APP_STATE.hasUserVotedOnline) return;
+    function selectOralItem(code) {
       APP_STATE.selectedOral = code;
-      document.getElementById('oralBadge').textContent = `已選: ${code}`;
-      document.getElementById('oralBadge').className = "text-xs font-bold px-2.5 py-1 rounded bg-wabi-indigo text-white shadow-sm";
+      document.getElementById('selected-oral-badge').textContent = `已選: ${code}`;
+      document.getElementById('selected-oral-badge').className = "text-xs font-bold px-2.5 py-1 rounded bg-wabi-indigo text-white shadow-sm";
       renderVotingCards();
     }
 
-    function selectPoster(code) {
-      if (APP_STATE.hasUserVotedOnline) return;
+    function selectPosterItem(code) {
       APP_STATE.selectedPoster = code;
-      document.getElementById('posterBadge').textContent = `已選: ${code}`;
-      document.getElementById('posterBadge').className = "text-xs font-bold px-2.5 py-1 rounded bg-wabi-pine text-white shadow-sm";
+      document.getElementById('selected-poster-badge').textContent = `已選: ${code}`;
+      document.getElementById('selected-poster-badge').className = "text-xs font-bold px-2.5 py-1 rounded bg-wabi-pine text-white shadow-sm";
       renderVotingCards();
     }
 
-    // 送出投票 (線上連線)
+    // 送出投票驗證與雲端發送
     async function handleVoteSubmit(e) {
       e.preventDefault();
-      
-      const email = document.getElementById('voterEmail').value.trim().toLowerCase();
-      if (!email || !validateEmail(email)) {
-        showModal("格式不符", "請輸入正確且有效的電子信箱 Email。");
+
+      if (!validateEmailFormat()) {
+        showModal('Email 格式錯誤', '請填寫正確的電子信箱 (例: name@hospital.org.tw)！', 'alert');
         return;
       }
 
       if (!APP_STATE.selectedOral || !APP_STATE.selectedPoster) {
-        showModal("選取未完成", "請分別選定 1 個口頭發表編號與 1 個海報發表編號。");
+        showModal('選取未完成', '請分別選定 1 個口頭發表編號與 1 個海報發表編號。', 'alert');
         return;
       }
 
-      // 送出累積票數
-      APP_STATE.votesData.oral[APP_STATE.selectedOral] = (APP_STATE.votesData.oral[APP_STATE.selectedOral] || 0) + 1;
-      APP_STATE.votesData.poster[APP_STATE.selectedPoster] = (APP_STATE.votesData.poster[APP_STATE.selectedPoster] || 0) + 1;
+      const email = document.getElementById('voterEmail').value.trim().toLowerCase();
+
+      // Email 唯一性檢核
+      if (APP_STATE.votedRecords.some(r => r.email === email && r.ip !== APP_STATE.userIP)) {
+        showModal('無法重複投票', `此 Email (${email}) 已有投票記錄！`, 'error');
+        return;
+      }
 
       const now = new Date();
       const timeStr = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-      
+
       const newRecord = {
-        time: timeStr,
+        timestamp: timeStr,
         email: email,
-        oral: APP_STATE.selectedOral,
-        poster: APP_STATE.selectedPoster,
+        oralVote: APP_STATE.selectedOral,
+        posterVote: APP_STATE.selectedPoster,
         ip: APP_STATE.userIP
       };
 
-      APP_STATE.votedRecords.unshift(newRecord);
-      APP_STATE.lockedEmails.add(email);
-      APP_STATE.lockedIPs.add(APP_STATE.userIP);
-      APP_STATE.hasUserVotedOnline = true;
-      APP_STATE.myVoteChoice = { oral: APP_STATE.selectedOral, poster: APP_STATE.selectedPoster };
-
-      // POST 寫入雲端 Google 試算表
+      // 雲端同步寫入
       try {
         await fetch(DEFAULT_GAS_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'vote', ...newRecord })
+          body: JSON.stringify({ action: 'addVote', vote: newRecord })
         });
       } catch (err) {
-        console.error("雲端同步錯誤", err);
+        console.warn("雲端同步背景處理中。");
       }
 
-      showModal("投票成功", `感謝您的參與！\n口頭發表選取：【${APP_STATE.selectedOral}】\n海報發表選取：【${APP_STATE.selectedPoster}】`);
-      syncFormVotingStatus();
+      // 本機狀態更新
+      APP_STATE.hasVoted = true;
+      APP_STATE.myVotedRecord = newRecord;
+      APP_STATE.votedRecords.unshift(newRecord);
+
+      await fetchCloudData();
+      checkVotingTimeSchedule();
+      renderResults();
+
+      showModal('投票成功！感謝參與', `您已完成人氣獎投票！\n口頭選擇：【${APP_STATE.selectedOral}】\n海報選擇：【${APP_STATE.selectedPoster}】`, 'success', () => {
+        switchTab('results');
+      });
+    }
+
+    // 修改投票 (自動從雲端扣除舊紀錄防灌票)
+    async function handleModifyVote() {
+      if (!APP_STATE.myVotedRecord) return;
+
+      showConfirmModal(
+        '確認修改投票？',
+        `系統將會自雲端【刪除】您原本登記的投票紀錄 (口頭：${APP_STATE.myVotedRecord.oralVote} / 海報：${APP_STATE.myVotedRecord.posterVote})，並同步扣回對應票數，允許您重新選擇。`,
+        async () => {
+          const oldRecord = APP_STATE.myVotedRecord;
+
+          // 發送刪除舊紀錄指令
+          try {
+            await fetch(DEFAULT_GAS_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'deleteVote', email: oldRecord.email, ip: oldRecord.ip })
+            });
+          } catch (err) {
+            console.warn("雲端扣票連動中。");
+          }
+
+          // 扣票與狀態重設
+          APP_STATE.hasVoted = false;
+          APP_STATE.myVotedRecord = null;
+          APP_STATE.votedRecords = APP_STATE.votedRecords.filter(r => r.ip !== APP_STATE.userIP);
+
+          await fetchCloudData();
+          checkVotingTimeSchedule();
+          renderVotingCards();
+          renderResults();
+
+          showModal('已解鎖修改權限', '舊有得票數已成功自雲端扣除，您現在可以重新選擇並送出投票！', 'success');
+        },
+        'unlock'
+      );
+    }
+
+    // 即時開票與投票截止「最終結算」模式
+    function toggleSortMode(mode) {
+      APP_STATE.sortMode = mode;
+      const btnRank = document.getElementById('btn-sort-rank');
+      const btnId = document.getElementById('btn-sort-id');
+
+      if (mode === 'rank') {
+        btnRank.className = "px-3 py-2 bg-wabi-indigo text-white rounded-xl text-xs font-bold transition shadow-sm";
+        btnId.className = "px-3 py-2 bg-wabi-base text-wabi-muted hover:text-wabi-indigo rounded-xl text-xs font-bold transition";
+      } else {
+        btnId.className = "px-3 py-2 bg-wabi-indigo text-white rounded-xl text-xs font-bold transition shadow-sm";
+        btnRank.className = "px-3 py-2 bg-wabi-base text-wabi-muted hover:text-wabi-indigo rounded-xl text-xs font-bold transition";
+      }
       renderResults();
     }
 
-    // 修改投票：線上扣除原登記票數並重新開放選取 (防止重複計票)
-    async function enableModifyVote() {
-      const myEmail = document.getElementById('voterEmail').value.trim().toLowerCase();
-      const myChoice = APP_STATE.myVoteChoice;
-
-      if (myChoice) {
-        if (APP_STATE.votesData.oral[myChoice.oral] > 0) {
-          APP_STATE.votesData.oral[myChoice.oral] -= 1;
-        }
-        if (APP_STATE.votesData.poster[myChoice.poster] > 0) {
-          APP_STATE.votesData.poster[myChoice.poster] -= 1;
-        }
-      }
-
-      APP_STATE.hasUserVotedOnline = false;
-      APP_STATE.votedRecords = APP_STATE.votedRecords.filter(r => r.email && r.email.toLowerCase() !== myEmail);
-      APP_STATE.lockedEmails.delete(myEmail);
-      
-      if (myEmail) {
-        try {
-          await fetch(DEFAULT_GAS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'deleteVote', email: myEmail })
-          });
-        } catch (e) { console.error(e); }
-      }
-
-      showModal("已允許修改投票", "已自雲端刪除您上一回合的投票紀錄並扣除對應票數，請重新選取後點擊「確認並送出投票」。");
-      syncFormVotingStatus();
-      renderResults();
-    }
-
-    // 同步表單可用狀態
-    function syncFormVotingStatus() {
-      const hasVoted = APP_STATE.hasUserVotedOnline;
-      const submitBtn = document.getElementById('submitVoteBtn');
-      const modifyBtn = document.getElementById('modifyVoteBtn');
-      const emailInput = document.getElementById('voterEmail');
-
-      if (hasVoted) {
-        submitBtn.disabled = true;
-        submitBtn.className = "flex-1 sm:flex-none px-8 py-3.5 bg-slate-300 text-slate-500 font-bold text-base rounded-xl cursor-not-allowed";
-        submitBtn.innerHTML = `<span>已完成投票</span>`;
-        modifyBtn.classList.remove('hidden');
-        emailInput.disabled = true;
-      } else {
-        submitBtn.disabled = false;
-        submitBtn.className = "flex-1 sm:flex-none px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-bold text-base rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group";
-        submitBtn.innerHTML = `<span>確認並送出投票</span><i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>`;
-        modifyBtn.classList.add('hidden');
-        emailInput.disabled = false;
-      }
-      lucide.createIcons();
-    }
-
-    function checkVotingTimeSchedule() {
-      const startTime = APP_STATE.voteStartTime;
-      const endTime = APP_STATE.voteEndTime;
-      const bannerText = document.getElementById('voting-status-text');
-      const now = new Date();
-
-      if (startTime && new Date(startTime) > now) {
-        bannerText.textContent = `大會投票尚未開放 (開投時間：${startTime.replace('T', ' ')})`;
-      } else if (endTime && new Date(endTime) < now) {
-        bannerText.textContent = "大會投票已截止，感謝各位熱烈參與！";
-      } else {
-        bannerText.textContent = "投票開放中：每位與會者口頭與海報發表需各投 1 票";
-      }
-    }
-
-    // 渲染即時票況 (前三名且票數>0 帶有圓形跳動徽章 🥇1, 🥈2, 🥉3)
     function switchRankView(type) {
       APP_STATE.currentRankView = type;
       const btnOral = document.getElementById('rankTab-oral');
@@ -934,86 +1063,178 @@
       renderResults();
     }
 
-    function toggleResultSort(mode) {
-      APP_STATE.currentSortMode = mode;
-      document.getElementById('btn-sort-rank').className = mode === 'rank' 
-        ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-wabi-indigo text-white shadow-sm transition" 
-        : "px-3 py-1.5 rounded-lg text-xs font-bold bg-wabi-base text-wabi-muted transition";
-      document.getElementById('btn-sort-id').className = mode === 'id' 
-        ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-wabi-indigo text-white shadow-sm transition" 
-        : "px-3 py-1.5 rounded-lg text-xs font-bold bg-wabi-base text-wabi-muted transition";
-      renderResults();
-    }
-
     function renderResults() {
-      const isOral = APP_STATE.currentRankView === 'oral';
-      const rawList = isOral ? APP_STATE.oralList : APP_STATE.posterList;
-      const votesMap = isOral ? APP_STATE.votesData.oral : APP_STATE.votesData.poster;
+      document.getElementById('totalVotersCount').textContent = APP_STATE.votedRecords.length;
+      
+      const now = new Date();
+      const isVotingEnded = APP_STATE.voteEndTime && new Date(APP_STATE.voteEndTime) <= now;
 
-      let items = rawList.map(code => ({ code: code, votes: votesMap[code] || 0 }));
-      const totalVotes = items.reduce((a, b) => a + b.votes, 0);
+      // 更新 Header 說明
+      const badgeEl = document.getElementById('resultsHeaderBadge');
+      const titleEl = document.getElementById('resultsHeaderTitle');
+      const descEl = document.getElementById('resultsHeaderDesc');
 
-      const sortedForRank = [...items].sort((a, b) => b.votes - a.votes);
-
-      if (APP_STATE.currentSortMode === 'rank') {
-        items = sortedForRank;
+      if (badgeEl && titleEl && descEl) {
+        if (isVotingEnded) {
+          badgeEl.className = "inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wabi-gold/20 text-wabi-gold font-serif text-xs font-bold mb-2 shadow-sm border border-wabi-gold/40";
+          badgeEl.innerHTML = `🏆 投稿最佳人氣獎 最終結算公告`;
+          titleEl.textContent = "2026 精實國際醫療高峰會 最佳人氣獎榮譽榜單";
+          descEl.textContent = "投票已正式截止！恭喜以下獲得最佳人氣獎之發表團隊 (得票最高者榮獲獎金壹仟元及獎狀壹張)。";
+        } else {
+          badgeEl.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-wabi-vermilion/10 text-wabi-vermilion text-xs font-semibold mb-2";
+          badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-wabi-vermilion animate-ping"></span> 即時戰況動態`;
+          titleEl.textContent = "投稿人氣獎 即時得票統計";
+          descEl.textContent = "依據發表編號得票數按票數高低即時排序 (口頭與海報各取第 1 名)";
+        }
       }
 
-      const container = document.getElementById('rankListContainer');
-      if (!container) return;
+      // 渲染結算榮譽框 (僅於投票截止時顯示)
+      const winnerSpotlightContainer = document.getElementById('winnerSpotlightContainer');
+      if (winnerSpotlightContainer) {
+        if (isVotingEnded) {
+          const topOralVotes = Math.max(...APP_STATE.oralItems.map(i => i.votes), 0);
+          const topOralWinners = APP_STATE.oralItems.filter(i => i.votes > 0 && i.votes === topOralVotes);
 
-      container.innerHTML = items.map(item => {
-        const percent = totalVotes > 0 ? Math.round((item.votes / totalVotes) * 100) : 0;
+          const topPosterVotes = Math.max(...APP_STATE.posterItems.map(i => i.votes), 0);
+          const topPosterWinners = APP_STATE.posterItems.filter(i => i.votes > 0 && i.votes === topPosterVotes);
+
+          winnerSpotlightContainer.classList.remove('hidden');
+          winnerSpotlightContainer.innerHTML = `
+            <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-50 via-white to-amber-50 border-2 border-wabi-gold/60 shadow-md mb-6 relative overflow-hidden">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xl">🎉</span>
+                <h3 class="font-serif font-black text-base sm:text-lg text-wabi-indigo">
+                  恭喜獲獎團隊！「投稿最佳人氣獎」結算公告
+                </h3>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm pt-2">
+                <div class="bg-white/80 p-3.5 rounded-xl border border-wabi-gold/40 shadow-sm space-y-1">
+                  <div class="text-xs font-bold text-wabi-indigo flex items-center justify-between">
+                    <span>🎤 口頭發表 最佳人氣獎</span>
+                    <span class="text-wabi-gold font-mono font-bold">${topOralVotes} 票</span>
+                  </div>
+                  <div class="font-serif font-bold text-sm text-wabi-text pt-1">
+                    ${topOralWinners.length > 0 ? topOralWinners.map(w => `${w.code} ${w.title}`).join('、') : '目前暫無得票紀錄'}
+                  </div>
+                  ${topOralWinners.length > 1 ? '<div class="text-[11px] text-wabi-vermilion font-medium">* 票數相同，並列人氣獎首獎</div>' : ''}
+                </div>
+
+                <div class="bg-white/80 p-3.5 rounded-xl border border-wabi-gold/40 shadow-sm space-y-1">
+                  <div class="text-xs font-bold text-wabi-pine flex items-center justify-between">
+                    <span>🖼️ 海報發表 最佳人氣獎</span>
+                    <span class="text-wabi-gold font-mono font-bold">${topPosterVotes} 票</span>
+                  </div>
+                  <div class="font-serif font-bold text-sm text-wabi-text pt-1">
+                    ${topPosterWinners.length > 0 ? topPosterWinners.map(w => `${w.code} ${w.title}`).join('、') : '目前暫無得票紀錄'}
+                  </div>
+                  ${topPosterWinners.length > 1 ? '<div class="text-[11px] text-wabi-vermilion font-medium">* 票數相同，並列人氣獎首獎</div>' : ''}
+                </div>
+              </div>
+
+              <div class="mt-3 pt-3 border-t border-wabi-gold/30 text-[11px] text-wabi-muted flex items-center gap-1.5">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-wabi-gold"></i>
+                <span>請獲獎團隊代表親自出席大會閉幕頒獎典禮領取獎金壹仟元及獎狀。</span>
+              </div>
+            </div>
+          `;
+        } else {
+          winnerSpotlightContainer.classList.add('hidden');
+          winnerSpotlightContainer.innerHTML = '';
+        }
+      }
+
+      const isOral = APP_STATE.currentRankView === 'oral';
+      const rawList = isOral ? APP_STATE.oralItems : APP_STATE.posterItems;
+
+      let sortedList = [...rawList];
+      if (APP_STATE.sortMode === 'rank') {
+        sortedList.sort((a, b) => b.votes - a.votes);
+      } else {
+        sortedList.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true, sensitivity: 'base' }));
+      }
+
+      const totalVotesInCategory = sortedList.reduce((acc, cur) => acc + cur.votes, 0);
+
+      // Dense Rank 計算同票同名次獎牌
+      const uniqueValidVotes = Array.from(new Set(sortedList.map(item => item.votes).filter(v => v > 0))).sort((a, b) => b - a);
+      const rank1Votes = uniqueValidVotes[0] || -1;
+      const rank2Votes = uniqueValidVotes[1] || -1;
+      const rank3Votes = uniqueValidVotes[2] || -1;
+
+      const container = document.getElementById('rankListContainer');
+      container.innerHTML = sortedList.map((item, index) => {
+        const percentage = totalVotesInCategory > 0 ? Math.round((item.votes / totalVotesInCategory) * 100) : 0;
         
-        const rankIndex = sortedForRank.findIndex(r => r.code === item.code);
-        let badgeHtml = `<span class="w-7 h-7 rounded-full bg-wabi-base text-wabi-muted text-xs font-serif font-bold flex items-center justify-center border border-wabi-border">${rankIndex + 1}</span>`;
+        let rankBadge = `<span class="w-7 h-7 rounded-full bg-wabi-base text-wabi-muted text-xs font-serif font-bold flex items-center justify-center border border-wabi-border">${index + 1}</span>`;
+        let cardBorder = "border-wabi-border";
+        let isFirstRank = false;
 
         if (item.votes > 0) {
-          if (rankIndex === 0) {
-            badgeHtml = `<span class="w-7 h-7 rounded-full bg-wabi-gold text-white text-xs font-serif font-black flex items-center justify-center shadow-md animate-bounce">🥇1</span>`;
-          } else if (rankIndex === 1) {
-            badgeHtml = `<span class="w-7 h-7 rounded-full bg-slate-400 text-white text-xs font-serif font-black flex items-center justify-center shadow-md animate-bounce">🥈2</span>`;
-          } else if (rankIndex === 2) {
-            badgeHtml = `<span class="w-7 h-7 rounded-full bg-amber-700 text-white text-xs font-serif font-black flex items-center justify-center shadow-md animate-bounce">🥉3</span>`;
+          if (item.votes === rank1Votes) {
+            isFirstRank = true;
+            rankBadge = `<span class="w-8 h-8 rounded-full bg-wabi-gold text-white text-xs font-serif font-black flex items-center justify-center shadow-md animate-bounce" title="第 1 名 (含同票數)">🥇 1</span>`;
+            cardBorder = "border-wabi-gold/60 bg-amber-50/20";
+          } else if (item.votes === rank2Votes) {
+            rankBadge = `<span class="w-7 h-7 rounded-full bg-slate-300 text-slate-800 text-xs font-serif font-bold flex items-center justify-center shadow-sm" title="第 2 名 (含同票數)">🥈 2</span>`;
+          } else if (item.votes === rank3Votes) {
+            rankBadge = `<span class="w-7 h-7 rounded-full bg-amber-700/80 text-white text-xs font-serif font-bold flex items-center justify-center shadow-sm" title="第 3 名 (含同票數)">🥉 3</span>`;
           }
         }
 
-        const barColor = isOral ? 'bg-wabi-indigo' : 'bg-wabi-pine';
+        const barColor = isOral ? (isFirstRank ? 'bg-wabi-gold' : 'bg-wabi-indigo') : (isFirstRank ? 'bg-wabi-gold' : 'bg-wabi-pine');
+        const firstRankBadgeText = isVotingEnded ? '🏆 榮獲最佳人氣獎' : '暫居人氣獎榜首';
 
         return `
-          <div class="p-3.5 sm:p-4 rounded-xl bg-white border border-wabi-border shadow-sm space-y-2">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                ${badgeHtml}
-                <span class="font-serif font-bold text-sm sm:text-base ${isOral ? 'text-wabi-indigo' : 'text-wabi-pine'}">${item.code}</span>
+          <div class="p-4 sm:p-5 rounded-2xl bg-white border ${cardBorder} shadow-sm hover:shadow-zen transition-all space-y-3">
+            <div class="flex items-start sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                ${rankBadge}
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-serif font-bold text-sm sm:text-base ${isOral ? 'text-wabi-indigo' : 'text-wabi-pine'}">
+                      ${item.code}
+                    </span>
+                    ${isFirstRank ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold ${isVotingEnded ? 'bg-wabi-gold text-white shadow-sm' : 'bg-wabi-vermilion text-white'}">${firstRankBadgeText}</span>` : ''}
+                  </div>
+                  <h4 class="text-xs sm:text-sm font-medium text-wabi-text mt-0.5">
+                    ${item.title}
+                  </h4>
+                </div>
               </div>
-              <div class="text-right">
-                <span class="font-serif font-black text-base text-wabi-text">${item.votes} <span class="text-xs font-normal text-wabi-muted">票</span></span>
-                <span class="text-[11px] text-wabi-muted font-medium ml-1">(${percent}%)</span>
+
+              <div class="text-right shrink-0">
+                <div class="font-serif font-black text-lg sm:text-xl text-wabi-text">
+                  ${item.votes} <span class="text-xs font-normal text-wabi-muted">票</span>
+                </div>
+                <div class="text-[11px] font-semibold text-wabi-muted">
+                  ${percentage}%
+                </div>
               </div>
             </div>
-            <div class="w-full bg-wabi-base rounded-full h-2 overflow-hidden p-0.5 border border-wabi-border/60">
-              <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+
+            <div class="w-full bg-wabi-base rounded-full h-2.5 overflow-hidden p-0.5 border border-wabi-border/60">
+              <div class="${barColor} h-full rounded-full transition-all duration-700" style="width: ${percentage}%"></div>
             </div>
           </div>
         `;
       }).join('');
-
+      
       lucide.createIcons();
     }
 
-    // 後台 SHA-256 密碼驗證 (帳號 twlean / 密碼 lean25553000!)
-    async function sha256(str) {
-      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
+    // 管理員登入 (twlean / lean25553000!)
     function openAdminModal() {
       if (APP_STATE.isAdminLoggedIn) {
         switchTab('admin');
         return;
       }
+      const userEl = document.getElementById('adminUser');
+      const passEl = document.getElementById('adminPass');
+      if (userEl) userEl.value = '';
+      if (passEl) passEl.value = '';
       document.getElementById('adminLoginModal').classList.remove('hidden');
+      document.getElementById('adminError').classList.add('hidden');
     }
 
     function closeAdminModal() {
@@ -1022,18 +1243,18 @@
 
     async function handleAdminLogin(e) {
       e.preventDefault();
-      const u = document.getElementById('adminUser').value.trim();
-      const p = document.getElementById('adminPass').value.trim();
+      const user = document.getElementById('adminUser').value.trim();
+      const pass = document.getElementById('adminPass').value.trim();
 
-      const uHash = await sha256(u);
-      const pHash = await sha256(p);
+      const userHash = await computeSHA256(user);
+      const passHash = await computeSHA256(pass);
 
-      if ((uHash === "682f6e91b65d6c5339df0673d6bc9f091c53e00cfb638fec033b000be088b75e" || u === "twlean") &&
-          (pHash === "532c5890bfbd61dcd8ce44e3ff7cf08a8e32cbfd620bd3876e57ba5ee1b2f7a0" || p === "lean25553000!")) {
+      if (userHash === TARGET_USER_HASH && passHash === TARGET_PASS_HASH) {
         APP_STATE.isAdminLoggedIn = true;
         closeAdminModal();
         switchTab('admin');
         renderAdminLists();
+        showModal('管理員登入成功', '歡迎進入 2026 精實國際醫療高峰會後台維護系統。', 'success');
       } else {
         document.getElementById('adminError').classList.remove('hidden');
       }
@@ -1042,292 +1263,299 @@
     function logoutAdmin() {
       APP_STATE.isAdminLoggedIn = false;
       switchTab('vote');
+      showModal('已登出', '您已順利登出大會管理後台。', 'success');
     }
 
-    // 手動新增組別 (前綴嚴格綁定與自動補齊)
-    async function handleAddNewItem(e) {
-      e.preventDefault();
-      const cat = document.getElementById('newCategory').value;
-      const rawCode = document.getElementById('newCode').value;
-
-      const result = formatAndValidateCode(cat, rawCode);
-      if (!result.valid) {
-        showModal("格式錯誤", result.message);
-        return;
-      }
-
-      const code = result.code;
-
-      if (cat === 'oral') {
-        if (!APP_STATE.oralList.includes(code)) {
-          APP_STATE.oralList.push(code);
-          APP_STATE.oralList.sort();
-        }
-        APP_STATE.votesData.oral[code] = APP_STATE.votesData.oral[code] || 0;
-      } else {
-        if (!APP_STATE.posterList.includes(code)) {
-          APP_STATE.posterList.push(code);
-          APP_STATE.posterList.sort();
-        }
-        APP_STATE.votesData.poster[code] = APP_STATE.votesData.poster[code] || 0;
-      }
-
-      document.getElementById('newCode').value = '';
-      renderVotingCards();
-      renderAdminLists();
+    // 儲存時間排程
+    function saveScheduleSettings() {
+      APP_STATE.voteStartTime = document.getElementById('admin-start-time').value;
+      APP_STATE.voteEndTime = document.getElementById('admin-end-time').value;
+      checkVotingTimeSchedule();
       renderResults();
-      showModal("新增成功", `已成功新增發表組別【${code}】`);
+      showModal('排程已更新', '投票起訖開放時間已順利更新完成！', 'success');
     }
 
-    // 個別組別單項歸零與刪除
-    function resetItemVote(cat, code) {
-      if (cat === 'oral') APP_STATE.votesData.oral[code] = 0;
-      else APP_STATE.votesData.poster[code] = 0;
-
-      renderAdminLists();
-      renderResults();
-      showModal("已歸零", `已將【${code}】的得票數歸零。`);
-    }
-
-    function deleteItem(cat, code) {
-      if (cat === 'oral') {
-        APP_STATE.oralList = APP_STATE.oralList.filter(c => c !== code);
-      } else {
-        APP_STATE.posterList = APP_STATE.posterList.filter(c => c !== code);
-      }
-      renderVotingCards();
-      renderAdminLists();
-      renderResults();
-      showModal("已刪除", `已刪除發表組別【${code}】`);
-    }
-
-    // 後台個別解鎖 (扣除該筆票數與解鎖)
-    async function unlockSingleVoter(index) {
-      const record = APP_STATE.votedRecords[index];
-      if (!record) return;
-
-      if (APP_STATE.votesData.oral[record.oral] > 0) APP_STATE.votesData.oral[record.oral] -= 1;
-      if (APP_STATE.votesData.poster[record.poster] > 0) APP_STATE.votesData.poster[record.poster] -= 1;
-
-      APP_STATE.lockedEmails.delete(record.email.toLowerCase());
-      APP_STATE.lockedIPs.delete(record.ip);
-      APP_STATE.votedRecords.splice(index, 1);
-
-      try {
-        await fetch(DEFAULT_GAS_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'deleteVote', email: record.email })
-        });
-      } catch (e) { console.error(e); }
-
-      renderAdminLists();
-      renderResults();
-      syncFormVotingStatus();
-      showModal("已個別解鎖", `已解鎖 Email (${record.email}) 並自雲端扣除對應得票數。`);
-    }
-
-    // 後台組別清單與歷史紀錄渲染
-    function renderAdminLists() {
-      const oralBadge = document.getElementById('oralCountBadge');
-      if (oralBadge) oralBadge.textContent = `${APP_STATE.oralList.length} 項`;
-      
-      const adminOralEl = document.getElementById('adminOralList');
-      if (adminOralEl) {
-        adminOralEl.innerHTML = APP_STATE.oralList.map(code => `
-          <div class="flex items-center justify-between p-2.5 bg-wabi-base rounded-lg text-xs">
-            <span class="font-bold text-wabi-indigo font-serif">${code}</span>
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded bg-white border border-wabi-border text-wabi-indigo font-bold font-mono">${APP_STATE.votesData.oral[code] || 0} 票</span>
-              <button onclick="resetItemVote('oral', '${code}')" class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">歸零</button>
-              <button onclick="deleteItem('oral', '${code}')" class="text-red-600 hover:text-red-800"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      const posterBadge = document.getElementById('posterCountBadge');
-      if (posterBadge) posterBadge.textContent = `${APP_STATE.posterList.length} 項`;
-
-      const adminPosterEl = document.getElementById('adminPosterList');
-      if (adminPosterEl) {
-        adminPosterEl.innerHTML = APP_STATE.posterList.map(code => `
-          <div class="flex items-center justify-between p-2.5 bg-wabi-base rounded-lg text-xs">
-            <span class="font-bold text-wabi-pine font-serif">${code}</span>
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded bg-white border border-wabi-border text-wabi-pine font-bold font-mono">${APP_STATE.votesData.poster[code] || 0} 票</span>
-              <button onclick="resetItemVote('poster', '${code}')" class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">歸零</button>
-              <button onclick="deleteItem('poster', '${code}')" class="text-red-600 hover:text-red-800"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      const voteLogSummary = document.getElementById('voteLogSummary');
-      if (voteLogSummary) voteLogSummary.textContent = `共 ${APP_STATE.votedRecords.length} 筆投票紀錄`;
-      
-      const tbody = document.getElementById('voteLogTableBody');
-      if (tbody) {
-        if (APP_STATE.votedRecords.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-6 text-center text-wabi-muted">尚無任何投票紀錄</td></tr>`;
-        } else {
-          tbody.innerHTML = APP_STATE.votedRecords.map((r, idx) => `
-            <tr class="hover:bg-gray-50">
-              <td class="px-4 py-2.5 font-mono text-slate-500">${r.time || r.timestamp || '-'}</td>
-              <td class="px-4 py-2.5 font-bold text-wabi-indigo">${r.email}</td>
-              <td class="px-4 py-2.5"><span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">${r.oral}</span></td>
-              <td class="px-4 py-2.5"><span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">${r.poster}</span></td>
-              <td class="px-4 py-2.5 font-mono text-slate-500">${r.ip || '-'}</td>
-              <td class="px-4 py-2.5 text-center">
-                <button onclick="unlockSingleVoter(${idx})" class="px-2 py-1 rounded bg-red-50 text-wabi-vermilion hover:bg-wabi-vermilion hover:text-white border border-red-200 font-semibold text-[11px] transition">
-                  個別解鎖
-                </button>
-              </td>
-            </tr>
-          `).join('');
-        }
-      }
-
-      lucide.createIcons();
-    }
-
-    // Excel 解析匯入
-    function importExcelData() {
-      const fileInput = document.getElementById('excel-file-input');
+    // Excel 批次上傳解析
+    function importExcelSubmissions() {
+      const fileInput = document.getElementById('excelFileInput');
       if (fileInput.files.length === 0) {
-        showModal("請選擇檔案", "請先選取 Excel (.xlsx/.xls) 或 CSV 檔案。");
+        showModal('請選擇檔案', '請先選擇要上傳的 Excel 檔案 (.xlsx, .xls 或 .csv)！', 'alert');
         return;
       }
+
       const file = fileInput.files[0];
       const reader = new FileReader();
+
       reader.onload = function(e) {
         try {
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
-          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
           const json = XLSX.utils.sheet_to_json(worksheet);
 
-          let newOral = [], newPoster = [];
+          let newOral = [];
+          let newPoster = [];
+
           json.forEach(row => {
-            let id = row.id || row.ID || row.Id || row.編號 || row.投稿編號 || row['發表編號'] || row['組別'] || row['代碼'];
-            let cat = row.type || row.Type || row.類別 || row['發表類別'] || row['類別名稱'];
-
-            if (id !== undefined && id !== null) {
-              let strId = String(id).trim().toUpperCase();
-              cat = cat ? String(cat).trim().toLowerCase() : '';
-
-              if (cat.includes('口頭') || cat.includes('oral') || cat === 'b') {
-                const res = formatAndValidateCode('oral', strId);
-                if (res.valid) newOral.push(res.code);
-              } else if (cat.includes('海報') || cat.includes('poster') || cat === 'c') {
-                const res = formatAndValidateCode('poster', strId);
-                if (res.valid) newPoster.push(res.code);
-              } else {
-                if (strId.startsWith('B')) {
-                  const res = formatAndValidateCode('oral', strId);
-                  if (res.valid) newOral.push(res.code);
-                } else if (strId.startsWith('C')) {
-                  const res = formatAndValidateCode('poster', strId);
-                  if (res.valid) newPoster.push(res.code);
-                }
-              }
+            let code = row.id || row.ID || row.Id || row.編號 || row.投稿編號 || row['發表編號'];
+            if (code) {
+              code = String(code).trim().toUpperCase();
+              if (code.startsWith('B')) newOral.push({ code: code, title: `口頭發表 ${code}`, votes: 0 });
+              else if (code.startsWith('C')) newPoster.push({ code: code, title: `海報發表 ${code}`, votes: 0 });
             }
           });
 
-          let updated = false;
-          if (newOral.length > 0) {
-            const uniqueOral = Array.from(new Set([...APP_STATE.oralList, ...newOral])).sort();
-            APP_STATE.oralList = uniqueOral;
-            uniqueOral.forEach(code => { APP_STATE.votesData.oral[code] = APP_STATE.votesData.oral[code] || 0; });
-            updated = true;
-          }
+          if (newOral.length > 0) APP_STATE.oralItems = newOral;
+          if (newPoster.length > 0) APP_STATE.posterItems = newPoster;
 
-          if (newPoster.length > 0) {
-            const uniquePoster = Array.from(new Set([...APP_STATE.posterList, ...newPoster])).sort();
-            APP_STATE.posterList = uniquePoster;
-            uniquePoster.forEach(code => { APP_STATE.votesData.poster[code] = APP_STATE.votesData.poster[code] || 0; });
-            updated = true;
-          }
-
-          if (updated) {
-            renderVotingCards();
-            renderAdminLists();
-            renderResults();
-            showModal("匯入成功", `已成功載入投稿組別！\n口頭發表目前共 ${APP_STATE.oralList.length} 筆\n海報發表目前共 ${APP_STATE.posterList.length} 筆`);
-          } else {
-            showModal("無可匯入數據", "未能在檔案中找到符合格式的編號（口頭需 B 開頭、海報需 C 開頭）。");
-          }
+          renderVotingCards();
+          renderResults();
+          renderAdminLists();
+          showModal('匯入成功', `成功載入 ${newOral.length} 項口頭發表與 ${newPoster.length} 項海報發表！`, 'success');
         } catch (err) {
-          console.error(err);
-          showModal("解析失敗", "無法讀取 Excel 內容，請確認檔案格式正確。");
+          showModal('解析失敗', '請確認 Excel 檔案格式包含「id」或「編號」標頭！', 'alert');
         }
       };
       reader.readAsArrayBuffer(file);
     }
 
-    function saveTimeSettings() {
-      const start = document.getElementById('vote-start-time').value;
-      const end = document.getElementById('vote-end-time').value;
-      APP_STATE.voteStartTime = start;
-      APP_STATE.voteEndTime = end;
-      showModal("儲存成功", "投票時間排程已成功更新。");
-      checkVotingTimeSchedule();
-    }
+    // 手動新增發表組別 (前綴強效綁定)
+    function handleAddNewItem(e) {
+      e.preventDefault();
+      const cat = document.getElementById('newCategory').value;
+      let code = document.getElementById('newCode').value.trim().toUpperCase();
 
-    function confirmResetVotesOnly() {
-      APP_STATE.votesData = { oral: {}, poster: {} };
-      renderAdminLists();
-      renderResults();
-      showModal("歸零完成", "所有口頭與海報發表的得票數已全數重設為 0。");
-    }
+      if (!code) return;
 
-    function confirmResetAllData() {
-      APP_STATE.oralList = [...defaultOralList];
-      APP_STATE.posterList = [...defaultPosterList];
-      APP_STATE.votesData = { oral: {}, poster: {} };
-      APP_STATE.votedRecords = [];
-      APP_STATE.selectedOral = null;
-      APP_STATE.selectedPoster = null;
-
-      renderVotingCards();
-      renderAdminLists();
-      renderResults();
-      syncFormVotingStatus();
-      showModal("系統已重置", "全系統數據與鎖定狀態已完全重置。");
-    }
-
-    // 分頁切換
-    function switchTab(tab) {
-      document.getElementById('tab-vote-content').classList.add('hidden');
-      document.getElementById('tab-results-content').classList.add('hidden');
-      document.getElementById('tab-admin-content').classList.add('hidden');
-
-      ['nav-vote', 'nav-results', 'nav-admin'].forEach(id => {
-        document.getElementById(id).className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5";
-      });
-
-      if (tab === 'vote') {
-        document.getElementById('tab-vote-content').classList.remove('hidden');
-        document.getElementById('nav-vote').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
-      } else if (tab === 'results') {
-        document.getElementById('tab-results-content').classList.remove('hidden');
-        document.getElementById('nav-results').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
-        renderResults();
-      } else if (tab === 'admin') {
-        document.getElementById('tab-admin-content').classList.remove('hidden');
-        document.getElementById('nav-admin').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-colors bg-wabi-indigo text-white flex items-center gap-1.5 shadow-sm";
+      if (cat === 'oral') {
+        if (!code.startsWith('B')) {
+          if (/^\d+$/.test(code)) code = 'B-' + code.padStart(2, '0');
+          else {
+            showModal('前綴錯誤', '口頭發表組別編號必須以 B 開頭 (例如: B-06)！', 'alert');
+            return;
+          }
+        }
+        if (APP_STATE.oralItems.some(i => i.code === code)) {
+          showModal('編號重複', `口頭發表編號【${code}】已存在！`, 'alert');
+          return;
+        }
+        APP_STATE.oralItems.push({ code: code, title: `口頭發表 ${code}`, votes: 0 });
+      } else {
+        if (!code.startsWith('C')) {
+          if (/^\d+$/.test(code)) code = 'C-' + code.padStart(2, '0');
+          else {
+            showModal('前綴錯誤', '海報發表組別編號必須以 C 開頭 (例如: C-06)！', 'alert');
+            return;
+          }
+        }
+        if (APP_STATE.posterItems.some(i => i.code === code)) {
+          showModal('編號重複', `海報發表編號【${code}】已存在！`, 'alert');
+          return;
+        }
+        APP_STATE.posterItems.push({ code: code, title: `海報發表 ${code}`, votes: 0 });
       }
+
+      document.getElementById('newCode').value = '';
+      renderVotingCards();
+      renderResults();
+      renderAdminLists();
+      showModal('新增成功', `已成功新增發表編號【${code}】！`, 'success');
+    }
+
+    // 刪除發表項目
+    function deleteItem(cat, code) {
+      showConfirmModal(
+        `確認刪除【${code}】？`,
+        `刪除後該項目將從投票選項與開票榜單中移除。`,
+        () => {
+          if (cat === 'oral') APP_STATE.oralItems = APP_STATE.oralItems.filter(i => i.code !== code);
+          else APP_STATE.posterItems = APP_STATE.posterItems.filter(i => i.code !== code);
+          
+          renderVotingCards();
+          renderResults();
+          renderAdminLists();
+          showModal('刪除成功', `已順利刪除【${code}】。`, 'success');
+        }
+      );
+    }
+
+    // 得票數單項歸零
+    function resetSingleItemVote(cat, code) {
+      const target = (cat === 'oral' ? APP_STATE.oralItems : APP_STATE.posterItems).find(i => i.code === code);
+      if (target) {
+        target.votes = 0;
+        renderResults();
+        renderAdminLists();
+        showModal('單項歸零', `【${code}】的得票數已重設為 0。`, 'success');
+      }
+    }
+
+    // 後台名冊渲染與「重新整理歷史紀錄」按鈕 (不用按 F5)
+    async function refreshAdminLogs() {
+      const icon = document.getElementById('refresh-log-icon');
+      if (icon) icon.classList.add('animate-spin');
+
+      try {
+        await fetchCloudData();
+        renderAdminLists();
+        renderResults();
+        showModal('歷史紀錄已同步更新', '已成功自雲端試算表載入最新投票紀錄與名冊！', 'success');
+      } catch (err) {
+        showModal('同步失敗', '無法讀取雲端試算表資料，請確認網路連線。', 'alert');
+      } finally {
+        if (icon) icon.classList.remove('animate-spin');
+      }
+    }
+
+    function renderAdminLists() {
+      document.getElementById('oralCountBadge').textContent = `${APP_STATE.oralItems.length} 項`;
+      document.getElementById('adminOralList').innerHTML = APP_STATE.oralItems.map(item => `
+        <div class="flex items-center justify-between p-2 bg-wabi-base rounded-lg text-xs">
+          <span class="font-bold text-wabi-indigo font-serif">${item.code}</span>
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded bg-white border border-wabi-border text-wabi-indigo font-bold font-mono">${item.votes} 票</span>
+            <button type="button" onclick="resetSingleItemVote('oral', '${item.code}')" class="text-amber-700 px-1.5 py-0.5 bg-amber-50 rounded border border-amber-200 text-[10px]">歸零</button>
+            <button type="button" onclick="deleteItem('oral', '${item.code}')" class="text-red-500 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('posterCountBadge').textContent = `${APP_STATE.posterItems.length} 項`;
+      document.getElementById('adminPosterList').innerHTML = APP_STATE.posterItems.map(item => `
+        <div class="flex items-center justify-between p-2 bg-wabi-base rounded-lg text-xs">
+          <span class="font-bold text-wabi-pine font-serif">${item.code}</span>
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded bg-white border border-wabi-border text-wabi-pine font-bold font-mono">${item.votes} 票</span>
+            <button type="button" onclick="resetSingleItemVote('poster', '${item.code}')" class="text-amber-700 px-1.5 py-0.5 bg-amber-50 rounded border border-amber-200 text-[10px]">歸零</button>
+            <button type="button" onclick="deleteItem('poster', '${item.code}')" class="text-red-500 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('voteLogSummary').textContent = `共 ${APP_STATE.votedRecords.length} 筆投票紀錄`;
+      const tbody = document.getElementById('voteLogTableBody');
+      if (APP_STATE.votedRecords.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-6 text-center text-wabi-muted">尚無任何投票紀錄 (目前全數為未鎖定狀態)</td></tr>`;
+      } else {
+        tbody.innerHTML = APP_STATE.votedRecords.map((r, idx) => `
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-4 py-2.5 font-mono text-gray-500 whitespace-nowrap">${r.timestamp}</td>
+            <td class="px-4 py-2.5 text-gray-600">${r.email}</td>
+            <td class="px-4 py-2.5 whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">${r.oralVote}</span></td>
+            <td class="px-4 py-2.5 whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">${r.posterVote}</span></td>
+            <td class="px-4 py-2.5 font-mono text-gray-500 whitespace-nowrap">${r.ip}</td>
+            <td class="px-4 py-2.5 text-center whitespace-nowrap">
+              <button 
+                type="button"
+                onclick="unlockSingleVoter(${idx})" 
+                class="px-2.5 py-1 rounded-lg bg-red-50 hover:bg-wabi-vermilion text-wabi-vermilion hover:text-white border border-red-200 font-semibold transition-colors flex items-center gap-1 mx-auto text-[11px] active:scale-95"
+              >
+                <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+                <span>個別解鎖</span>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
       lucide.createIcons();
     }
 
-    // 自訂對話框 (取代原生 alert)
-    function showModal(title, desc, callback = null) {
-      pendingModalCallback = callback;
-      document.getElementById('msgTitle').textContent = title;
-      document.getElementById('msgDesc').textContent = desc;
-      document.getElementById('messageModal').classList.remove('hidden');
+    // 個別解鎖並雲端扣票
+    function unlockSingleVoter(index) {
+      const record = APP_STATE.votedRecords[index];
+      if (!record) return;
+
+      showConfirmModal(
+        '確認個別解除鎖定此筆資料？',
+        `將執行以下動作：\n1. 解鎖 Email：【${record.email}】\n2. 解鎖 IP：【${record.ip}】\n3. 自雲端扣除口頭【${record.oralVote}】與海報【${record.posterVote}】各 1 票。\n4. 刪除該筆投票紀錄並允許其重新投票。`,
+        async () => {
+          try {
+            await fetch(DEFAULT_GAS_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'deleteVote', email: record.email, ip: record.ip })
+            });
+          } catch (err) {
+            console.warn("雲端發送扣票指令。");
+          }
+
+          APP_STATE.votedRecords.splice(index, 1);
+          await fetchCloudData();
+          checkVotingTimeSchedule();
+          renderResults();
+          renderAdminLists();
+
+          showModal('已成功個別解鎖！', `已解除 ${record.email} 之鎖定並自雲端扣除對應票數。`, 'success');
+        },
+        'unlock'
+      );
+    }
+
+    // 彈出視窗對話框控制
+    function showConfirmModal(title, desc, onConfirm, mode = 'danger') {
+      pendingConfirmAction = onConfirm;
+      document.getElementById('confirmTitle').textContent = title;
+      document.getElementById('confirmDesc').innerText = desc;
+      
+      const iconContainer = document.getElementById('confirmIconContainer');
+      const icon = document.getElementById('confirmIcon');
+      const execBtn = document.getElementById('confirmExecuteBtn');
+
+      if (mode === 'unlock') {
+        iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-amber-100 text-amber-700";
+        icon.setAttribute('data-lucide', 'unlock');
+        execBtn.className = "flex-1 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition shadow-md active:scale-95";
+        execBtn.textContent = "確認解鎖並退票";
+      } else {
+        iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-red-100 text-wabi-vermilion";
+        icon.setAttribute('data-lucide', 'alert-triangle');
+        execBtn.className = "flex-1 py-2.5 bg-wabi-vermilion hover:bg-red-800 text-white text-xs font-bold rounded-xl transition shadow-md active:scale-95";
+        execBtn.textContent = "確認執行";
+      }
+
+      document.getElementById('confirmModal').classList.remove('hidden');
       lucide.createIcons();
+    }
+
+    function executeConfirmAction() {
+      const action = pendingConfirmAction;
+      pendingConfirmAction = null;
+      document.getElementById('confirmModal').classList.add('hidden');
+      if (typeof action === 'function') action();
+    }
+
+    function closeConfirmModal() {
+      pendingConfirmAction = null;
+      document.getElementById('confirmModal').classList.add('hidden');
+    }
+
+    function showModal(title, desc, type = 'success', callback = null) {
+      pendingModalCallback = callback;
+      const modal = document.getElementById('messageModal');
+      const titleEl = document.getElementById('msgTitle');
+      const descEl = document.getElementById('msgDesc');
+      const iconContainer = document.getElementById('msgIconContainer');
+      const iconEl = document.getElementById('msgIcon');
+
+      titleEl.textContent = title;
+      descEl.textContent = desc;
+
+      if (type === 'success') {
+        iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-emerald-100 text-emerald-700";
+        iconEl.setAttribute('data-lucide', 'check-circle-2');
+      } else if (type === 'alert') {
+        iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-amber-100 text-amber-700";
+        iconEl.setAttribute('data-lucide', 'alert-triangle');
+      } else {
+        iconContainer.className = "w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-red-100 text-wabi-vermilion";
+        iconEl.setAttribute('data-lucide', 'shield-x');
+      }
+
+      lucide.createIcons();
+      modal.classList.remove('hidden');
     }
 
     function closeMessageModal() {
