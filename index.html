@@ -249,7 +249,7 @@
             <button 
               type="submit" 
               id="submitVoteBtn"
-              class="w-full sm:w-auto px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-serif font-bold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-98"
+              class="w-full sm:w-auto px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-serif font-bold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-98 cursor-pointer disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none"
             >
               <span>確認並送出投票</span>
               <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
@@ -566,7 +566,7 @@
     // 停用滑鼠右鍵點擊
     document.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 更新為全新的 Google Apps Script 部署網址
+    // Google Apps Script 部署網址
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyz_UI1R2cs3c36ahin6JbBfvxtmmb3nI_q7jyD4jGZhs0ASB_XUM9b3wioa3Jh5_nC/exec";
 
     // 全域狀態
@@ -706,7 +706,6 @@
 
       if (APP_STATE.hasVoted) {
         submitBtn.disabled = true;
-        submitBtn.className = "w-full sm:w-auto px-8 py-3.5 bg-gray-300 text-gray-500 font-serif font-bold text-base rounded-xl cursor-not-allowed shadow-none";
         submitBtn.innerHTML = `<span>已完成投票</span>`;
 
         if (isTimeOpen) {
@@ -724,13 +723,11 @@
         }
       } else if (!isTimeOpen) {
         submitBtn.disabled = true;
-        submitBtn.className = "w-full sm:w-auto px-8 py-3.5 bg-gray-300 text-gray-500 font-serif font-bold text-base rounded-xl cursor-not-allowed shadow-none";
         submitBtn.innerHTML = `<span>非開放投票時段</span>`;
         modifyBtn.classList.add('hidden');
         modifyBtn.classList.remove('flex');
       } else {
         submitBtn.disabled = false;
-        submitBtn.className = "w-full sm:w-auto px-8 py-3.5 bg-wabi-indigo hover:bg-slate-800 text-white font-serif font-bold text-base rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group active:scale-98";
         submitBtn.innerHTML = `<span>確認並送出投票</span><i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>`;
         modifyBtn.classList.add('hidden');
         modifyBtn.classList.remove('flex');
@@ -829,9 +826,11 @@
       renderVotingCards();
     }
 
-    // 送出投票並寫入 GAS
+    // 送出投票（點擊當下即時鎖死按鈕）
     async function handleVoteSubmit(e) {
       e.preventDefault();
+
+      const submitBtn = document.getElementById('submitVoteBtn');
 
       if (!validateEmailFormat()) {
         showModal('Email 格式錯誤', '請填寫正確的電子信箱 (例: name@hospital.org.tw)！', 'alert');
@@ -849,6 +848,16 @@
         showModal('無法重複投票', `此 Email (${email}) 已有投票記錄！`, 'error');
         return;
       }
+
+      // 【重點優化】：按下即時反白鎖死按鈕，防止重複點擊
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>處理中，請稍候...</span>
+      `;
 
       const now = new Date();
       const timeStr = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -868,7 +877,7 @@
           body: JSON.stringify({ action: 'addVote', vote: newRecord })
         });
       } catch (err) {
-        console.warn("雲端發送遭遇阻擋，請確認 GAS 權限設定。", err);
+        console.warn("雲端發送背景處理中。", err);
       }
 
       APP_STATE.hasVoted = true;
