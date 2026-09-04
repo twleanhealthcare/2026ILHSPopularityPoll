@@ -54,12 +54,47 @@
       -webkit-user-select: none;
     }
   </style>
+
+  <!-- ========================================== -->
+  <!-- 安全防護區塊：防 F12 / 右鍵 / 快捷鍵 / 控制台 -->
+  <!-- ========================================== -->
+  <script>
+    // 1. 禁用滑鼠右鍵選單
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    });
+
+    // 2. 攔截開發者工具快捷鍵 (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
+    document.addEventListener('keydown', function (e) {
+      if (
+        e.key === 'F12' ||
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) ||
+        (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) ||
+        (e.ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83))
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    });
+
+    // 3. 防除錯 (Debugger 斷點自動清理控制台)
+    setInterval(function () {
+      const startTime = performance.now();
+      (function () {}.constructor('debugger')());
+      const endTime = performance.now();
+      if (endTime - startTime > 100) {
+        console.clear();
+      }
+    }, 1000);
+  </script>
 </head>
 <body class="text-wabi-text font-sans antialiased min-h-screen flex flex-col selection:bg-wabi-indigo selection:text-white">
 
-  <!-- =============================== -->
-  <!-- 頁首頂部導覽列 (Navigation) -->
-  <!-- =============================== -->
+  <!-- 頁首頂部導覽列 -->
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-wabi-border transition-all">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('vote')">
@@ -90,12 +125,9 @@
   <!-- 主內容容器 -->
   <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-10">
 
-    <!-- =============================== -->
     <!-- TAB 1: 投票與活動說明頁面 -->
-    <!-- =============================== -->
     <section id="tab-vote-content" class="space-y-8">
       
-      <!-- 頂部活動簡介與重要須知 -->
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border relative overflow-hidden">
         <div class="absolute -right-12 -top-12 w-32 h-32 bg-wabi-indigoLight rounded-full opacity-60 pointer-events-none"></div>
         <div class="flex items-start gap-4 mb-4">
@@ -116,7 +148,6 @@
           本次大會匯集全國醫療院所推動精實醫療之成果，為讓更多專家/同業相互觀摩切磋，今年度持續辦理「投稿最佳人氣獎」票選活動，邀請您共襄盛舉！
         </p>
 
-        <!-- 詳細須知與聯絡資訊 -->
         <div class="mt-6 pt-6 border-t border-wabi-border/80 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
           <div class="space-y-2 bg-wabi-base/60 p-4 rounded-xl border border-wabi-border/60">
             <div class="flex items-center gap-2 text-wabi-indigo font-bold">
@@ -148,7 +179,6 @@
           </div>
         </div>
 
-        <!-- 聯絡人與主辦單位 -->
         <div class="mt-4 pt-4 border-t border-wabi-border/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-wabi-muted">
           <div>
             <span class="font-bold text-wabi-text">聯絡資訊：</span>
@@ -160,10 +190,8 @@
         </div>
       </div>
 
-      <!-- 投票填表主區域 -->
       <form id="votingForm" onsubmit="handleVoteSubmit(event)" class="space-y-8">
         
-        <!-- 身分驗證 -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
@@ -192,7 +220,6 @@
           </div>
         </div>
 
-        <!-- 口頭發表投票 (B 系列) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
@@ -205,12 +232,9 @@
             <span id="selected-oral-badge" class="text-xs font-bold px-2.5 py-1 rounded bg-wabi-indigoLight text-wabi-indigo">單選</span>
           </div>
 
-          <div id="oralList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
-            <!-- JS 動態生成按鈕 -->
-          </div>
+          <div id="oralList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2"></div>
         </div>
 
-        <!-- 海報發表投票 (C 系列) -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2.5">
@@ -223,12 +247,9 @@
             <span id="selected-poster-badge" class="text-xs font-bold px-2.5 py-1 rounded bg-wabi-pine/10 text-wabi-pine">單選</span>
           </div>
 
-          <div id="posterList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
-            <!-- JS 動態生成按鈕 -->
-          </div>
+          <div id="posterList" class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2"></div>
         </div>
 
-        <!-- 送出與修改投票控制區 -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           <div id="voted-summary-box" class="text-xs text-wabi-muted hidden sm:flex items-center gap-1.5 bg-wabi-base px-3 py-2 rounded-xl border border-wabi-border">
             <i data-lucide="check-circle-2" class="w-4 h-4 text-wabi-pine"></i>
@@ -260,9 +281,7 @@
       </form>
     </section>
 
-    <!-- =============================== -->
     <!-- TAB 2: 即時票況排行榜 -->
-    <!-- =============================== -->
     <section id="tab-results-content" class="hidden space-y-8">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
         
@@ -314,9 +333,7 @@
       </div>
     </section>
 
-    <!-- =============================== -->
     <!-- TAB 3: 後台管理主畫面 -->
-    <!-- =============================== -->
     <section id="tab-admin-content" class="hidden space-y-8">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-zen border border-wabi-border">
         
@@ -335,7 +352,6 @@
           </button>
         </div>
 
-        <!-- 1. 排程設定 -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border space-y-3">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
             <i data-lucide="calendar" class="w-4 h-4 text-wabi-pine"></i>
@@ -358,7 +374,6 @@
           </div>
         </div>
 
-        <!-- 2. Excel 上傳 -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border space-y-3">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo flex items-center gap-2">
             <i data-lucide="file-spread-sheet" class="w-4 h-4 text-wabi-pine"></i>
@@ -380,7 +395,6 @@
           </div>
         </div>
 
-        <!-- 3. 新增項目 -->
         <div class="my-6 p-5 sm:p-6 bg-wabi-base/80 rounded-2xl border border-wabi-border">
           <h3 class="text-sm font-serif font-bold text-wabi-indigo mb-3 flex items-center gap-2">
             <i data-lucide="plus-circle" class="w-4 h-4 text-wabi-pine"></i>
@@ -407,7 +421,6 @@
           </form>
         </div>
 
-        <!-- 4. 發表項目管理 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6">
           <div class="border border-wabi-border rounded-xl p-4 bg-white">
             <div class="flex items-center justify-between mb-3">
@@ -430,7 +443,6 @@
           </div>
         </div>
 
-        <!-- 5. 歷史紀錄與更新按鈕 -->
         <div class="pt-6 border-t border-wabi-border">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
@@ -469,9 +481,7 @@
                   <th class="px-4 py-3 text-center">操作管理</th>
                 </tr>
               </thead>
-              <tbody id="voteLogTableBody" class="divide-y divide-wabi-border/60">
-                <!-- 動態注入投票日誌與個別解鎖按鈕 -->
-              </tbody>
+              <tbody id="voteLogTableBody" class="divide-y divide-wabi-border/60"></tbody>
             </table>
           </div>
         </div>
@@ -550,7 +560,6 @@
     </div>
   </div>
 
-  <!-- 頁腳 -->
   <footer class="bg-white border-t border-wabi-border py-6 mt-12 text-center text-xs text-wabi-muted">
     <div class="max-w-5xl mx-auto px-4 space-y-2">
       <p class="font-serif font-medium text-wabi-text">2026 精實國際醫療高峰會 - 投稿人氣獎評選委員會</p>
@@ -563,9 +572,6 @@
   <!-- 核心系統邏輯 (JavaScript) -->
   <!-- =============================== -->
   <script>
-    // 停用滑鼠右鍵點擊
-    document.addEventListener('contextmenu', e => e.preventDefault());
-
     // Google Apps Script 部署網址
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyz_UI1R2cs3c36ahin6JbBfvxtmmb3nI_q7jyD4jGZhs0ASB_XUM9b3wioa3Jh5_nC/exec";
 
@@ -648,7 +654,6 @@
       return gen;
     }
 
-    // 雲端試算表雙向資料拉取與同步
     async function fetchCloudData() {
       try {
         const res = await fetch(DEFAULT_GAS_URL + "?action=getVotes");
@@ -826,7 +831,6 @@
       renderVotingCards();
     }
 
-    // 送出投票（點擊當下即時鎖死按鈕）
     async function handleVoteSubmit(e) {
       e.preventDefault();
 
@@ -849,7 +853,6 @@
         return;
       }
 
-      // 【重點優化】：按下即時反白鎖死按鈕，防止重複點擊
       submitBtn.disabled = true;
       submitBtn.innerHTML = `
         <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -893,7 +896,6 @@
       });
     }
 
-    // 修改投票 (自 GAS 刪除舊紀錄)
     async function handleModifyVote() {
       if (!APP_STATE.myVotedRecord) return;
 
@@ -1275,7 +1277,6 @@
       }
     }
 
-    // 後台歷程免刷頁同步更新
     async function refreshAdminLogs() {
       const icon = document.getElementById('refresh-log-icon');
       if (icon) icon.classList.add('animate-spin');
