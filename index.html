@@ -1127,13 +1127,15 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-    // 明文登入驗證 (twlean / lean25553000!)
+    // 登入驗證
     function handleAdminLogin(e) {
       e.preventDefault();
       const user = document.getElementById('adminUser').value.trim();
       const pass = document.getElementById('adminPass').value.trim();
-
-      if (user === "twlean" && pass === "lean25553000!") {
+    // 編碼
+      const credentials = user + ":" + pass;
+      const encodedCredentials = btoa(credntials);
+      if (encodedCredentials === "dHdsZWFuOmxlYW4yNTU1MzAwMCE=") {
         APP_STATE.isAdminLoggedIn = true;
         closeAdminModal();
         switchTab('admin');
