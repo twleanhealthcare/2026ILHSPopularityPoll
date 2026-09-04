@@ -149,7 +149,12 @@
         </div>
 
         <!-- 聯絡人與主辦單位 -->
-          <div class="inline-flex items-center gap-1 text-wabi-pine font-p[10px] bg-wabi-pine/5 px-2.5 py-1 rounded">
+        <div class="mt-4 pt-4 border-t border-wabi-border/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-wabi-muted">
+          <div>
+            <span class="font-bold text-wabi-text">聯絡資訊：</span>
+            臺北市立聯合醫院 創新永續發展中心 張管理師 (02)2555-3000 分機 2073 / A5667@tpech.gov.tw
+          </div>
+          <div class="inline-flex items-center gap-1 text-wabi-pine font-medium bg-wabi-pine/5 px-2.5 py-1 rounded">
             主辦：臺北市立聯合醫院、台灣精實醫務管理學會
           </div>
         </div>
@@ -1127,13 +1132,13 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-    // 登入驗證
+    // 明文登入驗證 (twlean / lean25553000!)
     function handleAdminLogin(e) {
       e.preventDefault();
       const user = document.getElementById('adminUser').value.trim();
       const pass = document.getElementById('adminPass').value.trim();
-    
-      if (user === "twlean" && === "lean25553000!) {
+
+      if (user === "twlean" && pass === "lean25553000!") {
         APP_STATE.isAdminLoggedIn = true;
         closeAdminModal();
         switchTab('admin');
