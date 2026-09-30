@@ -118,7 +118,7 @@
         </button>
         <button id="nav-admin" onclick="openAdminModal()" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors text-wabi-muted hover:text-wabi-indigo hover:bg-wabi-indigoLight flex items-center gap-1.5">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
-          <span>後台管理</span>
+          <span>LOGIN</span>
         </button>
       </nav>
     </div>
@@ -157,7 +157,7 @@
               <span>投票時間</span>
             </div>
             <p id="voting-time-display" class="text-wabi-muted pl-6">
-              2025年12月5日(五) 08:00-16:15<br>
+              2026年11月20日(五) 08:00-16:15<br>
               <span class="text-wabi-vermilion font-medium">(截至口頭發表最後一組報告完畢為準)</span>
             </p>
 
@@ -200,7 +200,7 @@
               <span class="w-7 h-7 rounded-full bg-wabi-indigo text-white text-xs font-serif font-bold flex items-center justify-center">1</span>
               <h3 class="text-base sm:text-lg font-serif font-bold text-wabi-indigo">驗證投票者身分</h3>
             </div>
-            <span id="device-status-tag" class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">系統線上運作中</span>
+            <span id="device-status-tag" class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">System Working</span>
           </div>
 
           <div>
@@ -218,7 +218,7 @@
                 class="w-full pl-10 pr-4 py-2.5 bg-wabi-base/40 border border-wabi-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-wabi-indigo/30 focus:border-wabi-indigo transition"
               />
             </div>
-            <p id="email-feedback" class="text-[11px] text-wabi-muted mt-1">請輸入正確 Email 格式，送出後即記錄於雲端庫</p>
+            <p id="email-feedback" class="text-[11px] text-wabi-muted mt-1">請輸入正確 Email 格式</p>
           </div>
         </div>
 
@@ -255,7 +255,7 @@
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           <div id="voted-summary-box" class="text-xs text-wabi-muted hidden sm:flex items-center gap-1.5 bg-wabi-base px-3 py-2 rounded-xl border border-wabi-border">
             <i data-lucide="check-circle-2" class="w-4 h-4 text-wabi-pine"></i>
-            <span id="voted-summary-text">您已完成投票</span>
+            <span id="voted-summary-text">投票進行中</span>
           </div>
 
           <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -290,7 +290,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-wabi-border pb-6">
           <div>
             <div id="resultsHeaderBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-wabi-vermilion/10 text-wabi-vermilion text-xs font-semibold mb-2">
-              <span class="w-2 h-2 rounded-full bg-wabi-vermilion animate-ping"></span> 即時戰況動態
+              <span class="w-2 h-2 rounded-full bg-wabi-vermilion animate-ping"></span> 即時動態票況
             </div>
             <h2 id="resultsHeaderTitle" class="text-xl sm:text-2xl font-serif font-black text-wabi-indigo">
               投稿人氣獎 即時得票統計
@@ -577,7 +577,7 @@
     // Google Apps Script 部署網址
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzoswjLt8FeymCGsQhxJlMcNeCOjQeh1f311sho71hoqDabYY6-JNfQS_UZQmHCMVAF/exec";
 
-    // 全域狀態 (已完全移除預設組別編號)
+    // 全域狀態
     const APP_STATE = {
       userIP: '偵測中...',
       isAdminLoggedIn: false,
