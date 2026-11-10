@@ -174,7 +174,7 @@
               <span>注意事項及規則</span>
             </div>
             <ul class="text-wabi-muted pl-6 space-y-1 list-disc list-outside">
-              <li>同一裝置僅限投一次。</li>
+              <li>同一EMAIL僅限投一次。</li>
               <li>口頭發表與海報發表需各投 1 票。</li>
               <li>獲獎者須出席最後頒獎（或代理人出席），未出席則不予頒發亦不遞補。</li>
             </ul>
@@ -452,7 +452,7 @@
                 <i data-lucide="list" class="w-4 h-4"></i>
                 <span>投票歷史紀錄與鎖定名冊</span>
               </h3>
-              <p class="text-[11px] text-wabi-muted mt-0.5">點選「個別解鎖」可同步解除該 IP/Email 鎖定並自雲端扣回對應票數。</p>
+              <p class="text-[11px] text-wabi-muted mt-0.5">點選「個別解鎖」可同步解除該 Email 鎖定並自雲端扣回對應票數。</p>
             </div>
             
             <div class="flex items-center gap-2">
@@ -579,7 +579,6 @@
 
     // 全域狀態
     const APP_STATE = {
-      userIP: '偵測中...',
       isAdminLoggedIn: false,
       currentRankView: 'oral',
       sortMode: 'rank',
@@ -605,34 +604,22 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
-      await fetchClientIP();
+      
+      // 讀取持久化儲存的投票時間設定
+      APP_STATE.voteStartTime = localStorage.getItem('voteStartTime') || '';
+      APP_STATE.voteEndTime = localStorage.getItem('voteEndTime') || '';
+      
+      const startTimeInput = document.getElementById('admin-start-time');
+      const endTimeInput = document.getElementById('admin-end-time');
+      if (startTimeInput) startTimeInput.value = APP_STATE.voteStartTime;
+      if (endTimeInput) endTimeInput.value = APP_STATE.voteEndTime;
+
       await fetchCloudData();
       renderVotingCards();
       renderResults();
       renderAdminLists();
       checkVotingTimeSchedule();
     });
-
-    async function fetchClientIP() {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
-        const res = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
-        clearTimeout(timeoutId);
-        const data = await res.json();
-        APP_STATE.userIP = data.ip || getSimulatedIP();
-      } catch (err) {
-        APP_STATE.userIP = getSimulatedIP();
-      }
-    }
-
-    function getSimulatedIP() {
-      const stored = sessionStorage.getItem('__sim_ip');
-      if (stored) return stored;
-      const gen = `192.168.${Math.floor(Math.random() * 200) + 10}.${Math.floor(Math.random() * 250) + 2}`;
-      sessionStorage.setItem('__sim_ip', gen);
-      return gen;
-    }
 
     async function fetchCloudData() {
       try {
@@ -664,10 +651,17 @@
             item.votes = posterCounts[item.code] || 0;
           });
 
-          const myRecord = APP_STATE.votedRecords.find(r => r.ip === APP_STATE.userIP);
-          if (myRecord) {
-            APP_STATE.hasVoted = true;
-            APP_STATE.myVotedRecord = myRecord;
+          // 僅檢查目前輸入框中的 Email 是否已有投票紀錄
+          const currentEmail = document.getElementById('voterEmail')?.value.trim().toLowerCase();
+          if (currentEmail) {
+            const myRecord = APP_STATE.votedRecords.find(r => r.email === currentEmail);
+            if (myRecord) {
+              APP_STATE.hasVoted = true;
+              APP_STATE.myVotedRecord = myRecord;
+            } else {
+              APP_STATE.hasVoted = false;
+              APP_STATE.myVotedRecord = null;
+            }
           }
         }
       } catch (err) {
@@ -693,8 +687,21 @@
       }
     }
 
+    // 解決 cross-browser datetime 解析問題的輔助函式
+    function parseLocalDateTime(dtStr) {
+      if (!dtStr) return null;
+      // 標準格式: YYYY-MM-DDTHH:mm
+      const parts = dtStr.split('T');
+      if (parts.length !== 2) return new Date(dtStr).getTime();
+      const dateParts = parts[0].split('-').map(Number);
+      const timeParts = parts[1].split(':').map(Number);
+      if (dateParts.length < 3 || timeParts.length < 2) return new Date(dtStr).getTime();
+      // 月份為 0-indexed
+      return new Date(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]).getTime();
+    }
+
     function checkVotingTimeSchedule() {
-      const now = new Date();
+      const now = new Date().getTime();
       const submitBtn = document.getElementById('submitVoteBtn');
       const modifyBtn = document.getElementById('modifyVoteBtn');
       const summaryBox = document.getElementById('voted-summary-box');
@@ -703,10 +710,13 @@
 
       let isTimeOpen = true;
 
-      if (APP_STATE.voteStartTime && new Date(APP_STATE.voteStartTime) > now) {
+      const startTimeStamp = parseLocalDateTime(APP_STATE.voteStartTime);
+      const endTimeStamp = parseLocalDateTime(APP_STATE.voteEndTime);
+
+      if (startTimeStamp && !isNaN(startTimeStamp) && now < startTimeStamp) {
         isTimeOpen = false;
       }
-      if (APP_STATE.voteEndTime && new Date(APP_STATE.voteEndTime) <= now) {
+      if (endTimeStamp && !isNaN(endTimeStamp) && now >= endTimeStamp) {
         isTimeOpen = false;
       }
 
@@ -729,7 +739,7 @@
         if (summaryBox) {
           summaryBox.classList.remove('hidden');
           summaryBox.classList.add('flex');
-          summaryText.textContent = `本裝置已完成投票 (口頭：${APP_STATE.myVotedRecord?.oralVote} / 海報：${APP_STATE.myVotedRecord?.posterVote})`;
+          summaryText.textContent = `此 Email 已完成投票 (口頭：${APP_STATE.myVotedRecord?.oralVote} / 海報：${APP_STATE.myVotedRecord?.posterVote})`;
         }
       } else if (!isTimeOpen) {
         submitBtn.disabled = true;
@@ -785,19 +795,41 @@
       const feedback = document.getElementById('email-feedback');
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (!emailInput.value) {
+      const val = emailInput.value.trim().toLowerCase();
+
+      if (!val) {
         feedback.textContent = "請輸入正確 Email 格式，送出後即記錄於雲端庫";
         feedback.className = "text-[11px] text-wabi-muted mt-1";
+        APP_STATE.hasVoted = false;
+        APP_STATE.myVotedRecord = null;
+        checkVotingTimeSchedule();
         return false;
       }
 
-      if (emailRegex.test(emailInput.value.trim())) {
-        feedback.textContent = "✓ 電子信箱格式正確";
-        feedback.className = "text-[11px] text-emerald-600 font-semibold mt-1";
-        return true;
+      if (emailRegex.test(val)) {
+        // 檢查該 Email 是否已經投過票
+        const existingRecord = APP_STATE.votedRecords.find(r => r.email === val);
+        if (existingRecord) {
+          feedback.textContent = "✕ 此 Email 已完成投票，無法重複投票";
+          feedback.className = "text-[11px] text-wabi-vermilion font-semibold mt-1";
+          APP_STATE.hasVoted = true;
+          APP_STATE.myVotedRecord = existingRecord;
+          checkVotingTimeSchedule();
+          return false;
+        } else {
+          feedback.textContent = "✓ 電子信箱格式正確";
+          feedback.className = "text-[11px] text-emerald-600 font-semibold mt-1";
+          APP_STATE.hasVoted = false;
+          APP_STATE.myVotedRecord = null;
+          checkVotingTimeSchedule();
+          return true;
+        }
       } else {
         feedback.textContent = "✕ 電子信箱格式有誤，請輸入完整 Email (例: name@hospital.org.tw)";
         feedback.className = "text-[11px] text-wabi-vermilion font-semibold mt-1";
+        APP_STATE.hasVoted = false;
+        APP_STATE.myVotedRecord = null;
+        checkVotingTimeSchedule();
         return false;
       }
     }
@@ -850,7 +882,7 @@
       const submitBtn = document.getElementById('submitVoteBtn');
 
       if (!validateEmailFormat()) {
-        showModal('Email 格式錯誤', '請填寫正確的電子信箱 (例: name@hospital.org.tw)！', 'alert');
+        showModal('Email 驗證未通過', '請填寫正確且尚未投票的電子信箱 (例: name@hospital.org.tw)！', 'alert');
         return;
       }
 
@@ -866,7 +898,7 @@
 
       const email = document.getElementById('voterEmail').value.trim().toLowerCase();
 
-      if (APP_STATE.votedRecords.some(r => r.email === email && r.ip !== APP_STATE.userIP)) {
+      if (APP_STATE.votedRecords.some(r => r.email === email)) {
         showModal('無法重複投票', `此 Email (${email}) 已有投票記錄！`, 'error');
         return;
       }
@@ -888,7 +920,7 @@
         email: email,
         oralVote: APP_STATE.selectedOral || '無',
         posterVote: APP_STATE.selectedPoster || '無',
-        ip: APP_STATE.userIP
+        ip: 'N/A'
       };
 
       try {
@@ -927,7 +959,7 @@
             await fetch(DEFAULT_GAS_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'deleteVote', email: oldRecord.email, ip: oldRecord.ip })
+              body: JSON.stringify({ action: 'deleteVote', email: oldRecord.email })
             });
           } catch (err) {
             console.warn("雲端發送扣票指令。", err);
@@ -935,7 +967,7 @@
 
           APP_STATE.hasVoted = false;
           APP_STATE.myVotedRecord = null;
-          APP_STATE.votedRecords = APP_STATE.votedRecords.filter(r => r.ip !== APP_STATE.userIP);
+          APP_STATE.votedRecords = APP_STATE.votedRecords.filter(r => r.email !== oldRecord.email);
 
           await fetchCloudData();
           checkVotingTimeSchedule();
@@ -981,8 +1013,9 @@
     function renderResults() {
       document.getElementById('totalVotersCount').textContent = APP_STATE.votedRecords.length;
       
-      const now = new Date();
-      const isVotingEnded = APP_STATE.voteEndTime && new Date(APP_STATE.voteEndTime) <= now;
+      const now = new Date().getTime();
+      const endTimeStamp = parseLocalDateTime(APP_STATE.voteEndTime);
+      const isVotingEnded = endTimeStamp && !isNaN(endTimeStamp) && now >= endTimeStamp;
 
       const badgeEl = document.getElementById('resultsHeaderBadge');
       const titleEl = document.getElementById('resultsHeaderTitle');
@@ -1183,6 +1216,11 @@
     function saveScheduleSettings() {
       APP_STATE.voteStartTime = document.getElementById('admin-start-time').value;
       APP_STATE.voteEndTime = document.getElementById('admin-end-time').value;
+      
+      // 保存至 LocalStorage 以防重新整理後重置
+      localStorage.setItem('voteStartTime', APP_STATE.voteStartTime);
+      localStorage.setItem('voteEndTime', APP_STATE.voteEndTime);
+
       checkVotingTimeSchedule();
       renderResults();
       showModal('排程已更新', '投票起訖開放時間已順利更新完成！', 'success');
@@ -1372,7 +1410,7 @@
             <td class="px-4 py-2.5 text-gray-600">${r.email}</td>
             <td class="px-4 py-2.5 whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">${r.oralVote}</span></td>
             <td class="px-4 py-2.5 whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">${r.posterVote}</span></td>
-            <td class="px-4 py-2.5 font-mono text-gray-500 whitespace-nowrap">${r.ip}</td>
+            <td class="px-4 py-2.5 font-mono text-gray-500 whitespace-nowrap">${r.ip || 'N/A'}</td>
             <td class="px-4 py-2.5 text-center whitespace-nowrap">
               <button 
                 type="button"
@@ -1396,13 +1434,13 @@
 
       showConfirmModal(
         '確認個別解除鎖定此筆資料？',
-        `將執行以下動作：\n1. 解鎖 Email：【${record.email}】\n2. 解鎖 IP：【${record.ip}】\n3. 自雲端扣除口頭【${record.oralVote}】與海報【${record.posterVote}】各 1 票。\n4. 刪除該筆投票紀錄並允許其重新投票。`,
+        `將執行以下動作：\n1. 解鎖 Email：【${record.email}】\n2. 自雲端扣除口頭【${record.oralVote}】與海報【${record.posterVote}】各 1 票。\n3. 刪除該筆投票紀錄並允許其重新投票。`,
         async () => {
           try {
             await fetch(DEFAULT_GAS_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'deleteVote', email: record.email, ip: record.ip })
+              body: JSON.stringify({ action: 'deleteVote', email: record.email })
             });
           } catch (err) {
             console.warn("雲端發送扣票指令。", err);
