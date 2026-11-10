@@ -61,12 +61,10 @@
   <!-- 安全防護區塊：防 F12 / 右鍵 / 快捷鍵 / 控制台 -->
   <!-- ========================================== -->
   <script>
-    // 1. 禁用滑鼠右鍵選單
     document.addEventListener('contextmenu', function (e) {
       e.preventDefault();
     });
 
-    // 2. 攔截開發者工具快捷鍵 (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
     document.addEventListener('keydown', function (e) {
       if (
         e.key === 'F12' ||
@@ -83,7 +81,6 @@
       }
     });
 
-    // 3. 防除錯 (Debugger 斷點自動清理控制台)
     setInterval(function () {
       const startTime = performance.now();
       (function () {}.constructor('debugger')());
@@ -174,7 +171,7 @@
               <span>注意事項及規則</span>
             </div>
             <ul class="text-wabi-muted pl-6 space-y-1 list-disc list-outside">
-              <li>同一EMAIL僅限投一次。</li>
+              <li>同一裝置僅限投一次。</li>
               <li>口頭發表與海報發表需各投 1 票。</li>
               <li>獲獎者須出席最後頒獎（或代理人出席），未出席則不予頒發亦不遞補。</li>
             </ul>
@@ -575,7 +572,7 @@
   <!-- =============================== -->
   <script>
     // Google Apps Script 部署網址
-    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzoswjLt8FeymCGsQhxJlMcNeCOjQeh1f311sho71hoqDabYY6-JNfQS_UZQmHCMVAF/exec";
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzPmCpYJghIgFCwV0b7qxWBFLeDfVY-a2IiTS_i1lvgmyUqbnIa-v7D-rbswfxvoUGw/exec";
 
     // 全域狀態
     const APP_STATE = {
@@ -618,7 +615,6 @@
         if (data && data.status === 'success') {
           if (data.records) APP_STATE.votedRecords = data.records;
           
-          // 1. 動態獲取雲端試算表設定的時間排程
           if (data.settings) {
             if (data.settings.voteStartTime) APP_STATE.voteStartTime = data.settings.voteStartTime;
             if (data.settings.voteEndTime) APP_STATE.voteEndTime = data.settings.voteEndTime;
@@ -629,18 +625,15 @@
             if (endTimeInput && APP_STATE.voteEndTime) endTimeInput.value = APP_STATE.voteEndTime;
           }
 
-          // 2. 記錄雲端伺服器時間，防範使用者手動變更用戶端時間
           if (data.serverTime) {
             APP_STATE.serverTime = data.serverTime;
           }
 
-          // 支援自雲端動態獲取 Items (如 GAS 回傳 items 陣列)
           if (data.items && Array.isArray(data.items) && data.items.length > 0) {
             APP_STATE.oralItems = data.items.filter(i => i.category === 'oral' || i.code.startsWith('B'));
             APP_STATE.posterItems = data.items.filter(i => i.category === 'poster' || i.code.startsWith('C'));
           }
 
-          // 統計得票數
           const oralCounts = {};
           const posterCounts = {};
 
@@ -656,7 +649,6 @@
             item.votes = posterCounts[item.code] || 0;
           });
 
-          // 僅檢查目前輸入框中的 Email 是否已有投票紀錄
           const currentEmail = document.getElementById('voterEmail')?.value.trim().toLowerCase();
           if (currentEmail) {
             const myRecord = APP_STATE.votedRecords.find(r => r.email === currentEmail);
@@ -674,7 +666,6 @@
       }
     }
 
-    // 將組別項目清單同步寫入雲端 GAS
     async function syncItemsToCloud() {
       try {
         const allItems = [
@@ -692,7 +683,6 @@
       }
     }
 
-    // 解決 cross-browser datetime 解析問題的輔助函式
     function parseLocalDateTime(dtStr) {
       if (!dtStr) return null;
       const parts = dtStr.split('T');
@@ -704,7 +694,6 @@
     }
 
     function checkVotingTimeSchedule() {
-      // 優先採用伺服器時間，未回傳時降級為本地時間
       const now = APP_STATE.serverTime ? new Date(APP_STATE.serverTime).getTime() : new Date().getTime();
       const submitBtn = document.getElementById('submitVoteBtn');
       const modifyBtn = document.getElementById('modifyVoteBtn');
@@ -811,7 +800,6 @@
       }
 
       if (emailRegex.test(val)) {
-        // 檢查該 Email 是否已經投過票
         const existingRecord = APP_STATE.votedRecords.find(r => r.email === val);
         if (existingRecord) {
           feedback.textContent = "✕ 此 Email 已完成投票，無法重複投票";
@@ -1225,52 +1213,41 @@
       showModal('已登出', '您已順利登出大會管理後台。', 'success');
     }
 
-async function saveScheduleSettings() {
-  const startTimeInput = document.getElementById('admin-start-time');
-  const endTimeInput = document.getElementById('admin-end-time');
+    async function saveScheduleSettings() {
+      const startTime = document.getElementById('admin-start-time').value;
+      const endTime = document.getElementById('admin-end-time').value;
 
-  const startTime = startTimeInput ? startTimeInput.value : '';
-  const endTime = endTimeInput ? endTimeInput.value : '';
+      if (!startTime || !endTime) {
+        showModal('時間未完整填寫', '請填寫完整的開始與截止時間！', 'alert');
+        return;
+      }
 
-  if (!startTime || !endTime) {
-    showModal('請完整填寫時間', '請務必選擇「開始開放時間」與「截止投票時間」！', 'alert');
-    return;
-  }
+      APP_STATE.voteStartTime = startTime;
+      APP_STATE.voteEndTime = endTime;
 
-  // 1. 更新本機 APP_STATE 狀態
-  APP_STATE.voteStartTime = startTime;
-  APP_STATE.voteEndTime = endTime;
+      try {
+        const response = await fetch(DEFAULT_GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'saveSettings',
+            voteStartTime: startTime,
+            voteEndTime: endTime
+          })
+        });
 
-  // 顯示載入中提示
-  showModal('處理中', '正在寫入雲端設定，請稍候...', 'alert');
-
-  try {
-    // 2. 發送至 Google Apps Script 雲端寫入
-    const response = await fetch(DEFAULT_GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({
-        action: 'saveSettings',
-        voteStartTime: startTime,
-        voteEndTime: endTime
-      })
-    });
-
-    const resData = await response.json();
-
-    if (resData && resData.status === 'success') {
-      // 3. 寫入成功，更新前端呈現與狀態
-      checkVotingTimeSchedule();
-      renderResults();
-      showModal('排程已更新並同步雲端', '投票起訖開放時間已成功寫入 Google 試算表「Settings」頁籤！\n跨裝置與手機將同步生效。', 'success');
-    } else {
-      showModal('雲端寫入拒絕', `寫入失敗：${resData.message || '未知錯誤'}`, 'error');
+        const resData = await response.json();
+        if (resData && resData.status === 'success') {
+          checkVotingTimeSchedule();
+          renderResults();
+          showModal('排程已更新並同步雲端', '投票起訖開放時間已順利寫入雲端試算表！所有使用者裝置將同步生效。', 'success');
+        } else {
+          showModal('儲存失敗', resData.message || '無法寫入雲端時間設定', 'error');
+        }
+      } catch (err) {
+        showModal('儲存失敗', '無法寫入雲端設定，請檢查網路連線或 GAS 部署權限。', 'alert');
+      }
     }
-  } catch (err) {
-    console.error("時間設定寫入異常：", err);
-    showModal('網路傳送失敗', '無法連線至雲端資料庫，請確認 GAS 部署網址是否正確，或是否允許「所有人 (Anyone)」存取！', 'error');
-  }
-}
 
     async function importExcelSubmissions() {
       const fileInput = document.getElementById('excelFileInput');
@@ -1306,7 +1283,6 @@ async function saveScheduleSettings() {
           if (newOral.length > 0) APP_STATE.oralItems = newOral;
           if (newPoster.length > 0) APP_STATE.posterItems = newPoster;
 
-          // 同步寫入雲端
           await syncItemsToCloud();
 
           renderVotingCards();
@@ -1357,7 +1333,6 @@ async function saveScheduleSettings() {
 
       document.getElementById('newCode').value = '';
       
-      // 同步寫入雲端
       await syncItemsToCloud();
 
       renderVotingCards();
