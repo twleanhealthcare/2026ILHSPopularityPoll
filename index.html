@@ -585,6 +585,7 @@
       
       voteStartTime: '',
       voteEndTime: '',
+      serverTime: null,
 
       selectedOral: null,
       selectedPoster: null,
@@ -592,10 +593,8 @@
       hasVoted: false,
       myVotedRecord: null,
 
-      // 清空預設值，完全由雲端/後台匯入動態供給
       oralItems: [],
       posterItems: [],
-
       votedRecords: []
     };
 
@@ -604,16 +603,6 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
-      
-      // 讀取持久化儲存的投票時間設定
-      APP_STATE.voteStartTime = localStorage.getItem('voteStartTime') || '';
-      APP_STATE.voteEndTime = localStorage.getItem('voteEndTime') || '';
-      
-      const startTimeInput = document.getElementById('admin-start-time');
-      const endTimeInput = document.getElementById('admin-end-time');
-      if (startTimeInput) startTimeInput.value = APP_STATE.voteStartTime;
-      if (endTimeInput) endTimeInput.value = APP_STATE.voteEndTime;
-
       await fetchCloudData();
       renderVotingCards();
       renderResults();
@@ -629,6 +618,22 @@
         if (data && data.status === 'success') {
           if (data.records) APP_STATE.votedRecords = data.records;
           
+          // 1. 動態獲取雲端試算表設定的時間排程
+          if (data.settings) {
+            if (data.settings.voteStartTime) APP_STATE.voteStartTime = data.settings.voteStartTime;
+            if (data.settings.voteEndTime) APP_STATE.voteEndTime = data.settings.voteEndTime;
+
+            const startTimeInput = document.getElementById('admin-start-time');
+            const endTimeInput = document.getElementById('admin-end-time');
+            if (startTimeInput && APP_STATE.voteStartTime) startTimeInput.value = APP_STATE.voteStartTime;
+            if (endTimeInput && APP_STATE.voteEndTime) endTimeInput.value = APP_STATE.voteEndTime;
+          }
+
+          // 2. 記錄雲端伺服器時間，防範使用者手動變更用戶端時間
+          if (data.serverTime) {
+            APP_STATE.serverTime = data.serverTime;
+          }
+
           // 支援自雲端動態獲取 Items (如 GAS 回傳 items 陣列)
           if (data.items && Array.isArray(data.items) && data.items.length > 0) {
             APP_STATE.oralItems = data.items.filter(i => i.category === 'oral' || i.code.startsWith('B'));
@@ -690,18 +695,17 @@
     // 解決 cross-browser datetime 解析問題的輔助函式
     function parseLocalDateTime(dtStr) {
       if (!dtStr) return null;
-      // 標準格式: YYYY-MM-DDTHH:mm
       const parts = dtStr.split('T');
       if (parts.length !== 2) return new Date(dtStr).getTime();
       const dateParts = parts[0].split('-').map(Number);
       const timeParts = parts[1].split(':').map(Number);
       if (dateParts.length < 3 || timeParts.length < 2) return new Date(dtStr).getTime();
-      // 月份為 0-indexed
       return new Date(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]).getTime();
     }
 
     function checkVotingTimeSchedule() {
-      const now = new Date().getTime();
+      // 優先採用伺服器時間，未回傳時降級為本地時間
+      const now = APP_STATE.serverTime ? new Date(APP_STATE.serverTime).getTime() : new Date().getTime();
       const submitBtn = document.getElementById('submitVoteBtn');
       const modifyBtn = document.getElementById('modifyVoteBtn');
       const summaryBox = document.getElementById('voted-summary-box');
@@ -924,11 +928,19 @@
       };
 
       try {
-        await fetch(DEFAULT_GAS_URL, {
+        const response = await fetch(DEFAULT_GAS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'addVote', vote: newRecord })
         });
+        const resData = await response.json();
+        
+        if (resData && resData.status === 'error') {
+          showModal('投票失敗', resData.message || '無法寫入投票，可能非開放時間！', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>確認並送出投票</span><i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>`;
+          return;
+        }
       } catch (err) {
         console.warn("雲端發送背景處理中。", err);
       }
@@ -1013,7 +1025,7 @@
     function renderResults() {
       document.getElementById('totalVotersCount').textContent = APP_STATE.votedRecords.length;
       
-      const now = new Date().getTime();
+      const now = APP_STATE.serverTime ? new Date(APP_STATE.serverTime).getTime() : new Date().getTime();
       const endTimeStamp = parseLocalDateTime(APP_STATE.voteEndTime);
       const isVotingEnded = endTimeStamp && !isNaN(endTimeStamp) && now >= endTimeStamp;
 
@@ -1213,17 +1225,30 @@
       showModal('已登出', '您已順利登出大會管理後台。', 'success');
     }
 
-    function saveScheduleSettings() {
-      APP_STATE.voteStartTime = document.getElementById('admin-start-time').value;
-      APP_STATE.voteEndTime = document.getElementById('admin-end-time').value;
-      
-      // 保存至 LocalStorage 以防重新整理後重置
-      localStorage.setItem('voteStartTime', APP_STATE.voteStartTime);
-      localStorage.setItem('voteEndTime', APP_STATE.voteEndTime);
+    async function saveScheduleSettings() {
+      const startTime = document.getElementById('admin-start-time').value;
+      const endTime = document.getElementById('admin-end-time').value;
 
-      checkVotingTimeSchedule();
-      renderResults();
-      showModal('排程已更新', '投票起訖開放時間已順利更新完成！', 'success');
+      APP_STATE.voteStartTime = startTime;
+      APP_STATE.voteEndTime = endTime;
+
+      try {
+        await fetch(DEFAULT_GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'saveSettings',
+            voteStartTime: startTime,
+            voteEndTime: endTime
+          })
+        });
+
+        checkVotingTimeSchedule();
+        renderResults();
+        showModal('排程已更新並同步雲端', '投票起訖開放時間已順利寫入雲端試算表！所有使用者裝置將同步生效。', 'success');
+      } catch (err) {
+        showModal('儲存失敗', '無法寫入雲端設定，請檢查網路連線。', 'alert');
+      }
     }
 
     async function importExcelSubmissions() {
