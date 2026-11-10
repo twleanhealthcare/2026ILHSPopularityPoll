@@ -154,7 +154,7 @@
               <span>投票時間</span>
             </div>
             <p id="voting-time-display" class="text-wabi-muted pl-6 font-mono">
-              尚未設定投票起訖時間
+              載入中或尚未設定投票時間...
             </p>
 
             <div class="flex items-center gap-2 text-wabi-indigo font-bold pt-2">
@@ -170,7 +170,7 @@
               <span>注意事項及規則</span>
             </div>
             <ul class="text-wabi-muted pl-6 space-y-1 list-disc list-outside">
-              <li>同一信箱僅限投一次。</li>
+              <li>同一 Email 僅限投一次。</li>
               <li>口頭發表與海報發表需各投 1 票。</li>
               <li>獲獎者須出席最後頒獎（或代理人出席），未出席則不予頒發亦不遞補。</li>
             </ul>
@@ -571,7 +571,7 @@
   <!-- =============================== -->
   <script>
     // Google Apps Script 部署網址
-    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzZZdicpcxZ1xDD41JjraQStlnG45honwn8Z-EAFfqBbAiRqI4CZlgtq1jxlmINBTtk/exec";
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzoswjLt8FeymCGsQhxJlMcNeCOjQeh1f311sho71hoqDabYY6-JNfQS_UZQmHCMVAF/exec";
 
     // 全域狀態
     const APP_STATE = {
@@ -606,12 +606,32 @@
       checkVotingTimeSchedule();
     });
 
-    // 格式化 2026-11-20T08:00 為 2026/11/20 08:00
+    // 格式化時間：將 ISO 或 datetime-local 轉為 YYYY/MM/DD HH:mm
     function formatVoteTime(dtStr) {
       if (!dtStr) return '';
-      const parts = dtStr.split('T');
-      if (parts.length !== 2) return dtStr;
-      return `${parts[0].replace(/-/g, '/')} ${parts[1]}`;
+      
+      if (typeof dtStr === 'string' && dtStr.includes('/') && dtStr.includes(':')) {
+        return dtStr;
+      }
+
+      const d = new Date(dtStr);
+      if (!isNaN(d.getTime())) {
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const hh = String(d.getHours()).padStart(2, '0');
+        const min = String(d.getMinutes()).padStart(2, '0');
+        return `${yyyy}/${mm}/${dd} ${hh}:${min}`;
+      }
+
+      if (typeof dtStr === 'string' && dtStr.includes('T')) {
+        const parts = dtStr.split('T');
+        const dateFormatted = parts[0].replace(/-/g, '/');
+        const timeFormatted = parts[1].substring(0, 5);
+        return `${dateFormatted} ${timeFormatted}`;
+      }
+
+      return String(dtStr);
     }
 
     async function fetchCloudData() {
@@ -726,7 +746,7 @@
           const endStr = formatVoteTime(APP_STATE.voteEndTime);
           timeDisplay.innerHTML = `${startStr} ~ ${endStr}`;
         } else {
-          timeDisplay.innerHTML = `尚未設定投票起訖時間`;
+          timeDisplay.innerHTML = `載入中或尚未設定投票時間...`;
         }
       }
 
