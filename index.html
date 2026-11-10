@@ -153,9 +153,8 @@
               <i data-lucide="clock" class="w-4 h-4 text-wabi-vermilion"></i>
               <span>投票時間</span>
             </div>
-            <p id="voting-time-display" class="text-wabi-muted pl-6">
-              2026年11月20日(五) 08:00-16:15<br>
-              <span class="text-wabi-vermilion font-medium">(截至口頭發表最後一組報告完畢為準)</span>
+            <p id="voting-time-display" class="text-wabi-muted pl-6 font-mono">
+              尚未設定投票起訖時間
             </p>
 
             <div class="flex items-center gap-2 text-wabi-indigo font-bold pt-2">
@@ -607,6 +606,14 @@
       checkVotingTimeSchedule();
     });
 
+    // 格式化 2026-11-20T08:00 為 2026/11/20 08:00
+    function formatVoteTime(dtStr) {
+      if (!dtStr) return '';
+      const parts = dtStr.split('T');
+      if (parts.length !== 2) return dtStr;
+      return `${parts[0].replace(/-/g, '/')} ${parts[1]}`;
+    }
+
     async function fetchCloudData() {
       try {
         const res = await fetch(DEFAULT_GAS_URL + "?action=getVotes");
@@ -713,8 +720,14 @@
         isTimeOpen = false;
       }
 
-      if (APP_STATE.voteStartTime && APP_STATE.voteEndTime && timeDisplay) {
-        timeDisplay.innerHTML = `${APP_STATE.voteStartTime.replace('T', ' ')} ~ ${APP_STATE.voteEndTime.replace('T', ' ')}<br><span class="text-wabi-vermilion font-medium">(截至口頭發表最後一組報告完畢為準)</span>`;
+      if (timeDisplay) {
+        if (APP_STATE.voteStartTime && APP_STATE.voteEndTime) {
+          const startStr = formatVoteTime(APP_STATE.voteStartTime);
+          const endStr = formatVoteTime(APP_STATE.voteEndTime);
+          timeDisplay.innerHTML = `${startStr} ~ ${endStr}`;
+        } else {
+          timeDisplay.innerHTML = `尚未設定投票起訖時間`;
+        }
       }
 
       if (APP_STATE.hasVoted) {
@@ -1191,39 +1204,39 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-async function handleAdminLogin(e) {
-  e.preventDefault();
-  const user = document.getElementById('adminUser').value.trim();
-  const pass = document.getElementById('adminPass').value.trim();
-  const errorEl = document.getElementById('adminError');
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUser').value.trim();
+      const pass = document.getElementById('adminPass').value.trim();
+      const errorEl = document.getElementById('adminError');
 
-  try {
-    const response = await fetch(DEFAULT_GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({
-        action: 'adminLogin',
-        user: user,
-        pass: pass
-      })
-    });
+      try {
+        const response = await fetch(DEFAULT_GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'adminLogin',
+            user: user,
+            pass: pass
+          })
+        });
 
-    const resData = await response.json();
+        const resData = await response.json();
 
-    if (resData && resData.status === 'success') {
-      APP_STATE.isAdminLoggedIn = true;
-      closeAdminModal();
-      switchTab('admin');
-      renderAdminLists();
-      showModal('管理員登入成功', '歡迎進入 2026 精實國際醫療高峰會後台維護系統。', 'success');
-    } else {
-      errorEl.textContent = resData.message || '帳號或密碼錯誤，請重新確認！';
-      errorEl.classList.remove('hidden');
+        if (resData && resData.status === 'success') {
+          APP_STATE.isAdminLoggedIn = true;
+          closeAdminModal();
+          switchTab('admin');
+          renderAdminLists();
+          showModal('管理員登入成功', '歡迎進入 2026 精實國際醫療高峰會後台維護系統。', 'success');
+        } else {
+          errorEl.textContent = resData.message || '帳號或密碼錯誤，請重新確認！';
+          errorEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        showModal('連線失敗', '無法連接後台驗證伺服器，請檢查網路連線。', 'error');
+      }
     }
-  } catch (err) {
-    showModal('連線失敗', '無法連接後台驗證伺服器，請檢查網路連線。', 'error');
-  }
-}
 
     function logoutAdmin() {
       APP_STATE.isAdminLoggedIn = false;
