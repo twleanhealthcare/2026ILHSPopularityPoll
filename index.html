@@ -572,7 +572,7 @@
   <!-- =============================== -->
   <script>
     // Google Apps Script 部署網址
-    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzPmCpYJghIgFCwV0b7qxWBFLeDfVY-a2IiTS_i1lvgmyUqbnIa-v7D-rbswfxvoUGw/exec";
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzZZdicpcxZ1xDD41JjraQStlnG45honwn8Z-EAFfqBbAiRqI4CZlgtq1jxlmINBTtk/exec";
 
     // 全域狀態
     const APP_STATE = {
@@ -1191,21 +1191,39 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
-    function handleAdminLogin(e) {
-      e.preventDefault();
-      const user = document.getElementById('adminUser').value.trim();
-      const pass = document.getElementById('adminPass').value.trim();
+async function handleAdminLogin(e) {
+  e.preventDefault();
+  const user = document.getElementById('adminUser').value.trim();
+  const pass = document.getElementById('adminPass').value.trim();
+  const errorEl = document.getElementById('adminError');
 
-      if (user === "twlean" && pass === "lean25553000!") {
-        APP_STATE.isAdminLoggedIn = true;
-        closeAdminModal();
-        switchTab('admin');
-        renderAdminLists();
-        showModal('管理員登入成功', '歡迎進入 2026 精實國際醫療高峰會後台維護系統。', 'success');
-      } else {
-        document.getElementById('adminError').classList.remove('hidden');
-      }
+  try {
+    const response = await fetch(DEFAULT_GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'adminLogin',
+        user: user,
+        pass: pass
+      })
+    });
+
+    const resData = await response.json();
+
+    if (resData && resData.status === 'success') {
+      APP_STATE.isAdminLoggedIn = true;
+      closeAdminModal();
+      switchTab('admin');
+      renderAdminLists();
+      showModal('管理員登入成功', '歡迎進入 2026 精實國際醫療高峰會後台維護系統。', 'success');
+    } else {
+      errorEl.textContent = resData.message || '帳號或密碼錯誤，請重新確認！';
+      errorEl.classList.remove('hidden');
     }
+  } catch (err) {
+    showModal('連線失敗', '無法連接後台驗證伺服器，請檢查網路連線。', 'error');
+  }
+}
 
     function logoutAdmin() {
       APP_STATE.isAdminLoggedIn = false;
